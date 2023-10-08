@@ -7,19 +7,14 @@ runs:
   main: "dist/index.js"
 
 inputs:
-  numOfChars:
-    description: "Number of unicode characters to output."
+  COMMENT_ID:
+    description: "Comment ID to be marked as the answer."
+    required: true
+  GITHUB_TOKEN:
+    description: "GitHub personal access token."
     required: false
-    default: "100"
-  startRange:
-    description: "Unicode character start range."
-    required: false
-    default: "0"
-  endRange:
-    description: "Unicode character end range."
-    required: false
-    default: "50000"
+    default: ${{ secrets.GITHUB_TOKEN }}"
 
 branding:
-  icon: "type"
-  color: "blue"
+  icon: "check-circle"
+  color: "green"
