@@ -1,0 +1,25 @@
+name: "Random Unicode Text Generator 🈸⫛⊹⦑✨⦖⏲↶⾍┣✌"
+description: "Create random unicode text from an input range"
+author: "Wesley Scholl"
+
+runs:
+  using: "node16"
+  main: "dist/index.js"
+
+inputs:
+  numOfChars:
+    description: "Number of unicode characters to output."
+    required: false
+    default: "100"
+  startRange:
+    description: "Unicode character start range."
+    required: false
+    default: "0"
+  endRange:
+    description: "Unicode character end range."
+    required: false
+    default: "50000"
+
+branding:
+  icon: "type"
+  color: "blue"
