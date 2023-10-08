@@ -1,7 +1,7 @@
 {
-  "name": "random-unicode-text-generator",
+  "name": "mark-discussion-comment-answer",
   "version": "1.0.0",
-  "description": "Create random unicode text from an input range",
+  "description": "Mark a discussion comment as the answer",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wesleyscholl/<your_repo>.git"
+    "url": "git+https://github.com/konjoinfinity/mark-discussion-comment-answer.git"
   },
   "keywords": ["github", "workflow", "actions"],
   "author": "wesley scholl",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wesleyscholl/<your_repo>/issues"
+    "url": "https://github.com/konjoinfinity/mark-discussion-comment-answer/issues"
   },
-  "homepage": "https://github.com/wesleyscholl/<your_repo>#readme",
+  "homepage": "https://github.com/konjoinfinity/mark-discussion-comment-answer#readme",
   "devDependencies": {
     "@babel/preset-typescript": "^7.22.15",
     "@jest/globals": "^29.7.0",
