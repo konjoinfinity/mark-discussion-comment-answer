@@ -1,27 +1,43 @@
-import { getInput, setOutput } from "@actions/core";
+import { getInput, setFailed, setOutput } from "@actions/core";
+let { graphql } = require("@octokit/graphql");
 
-export async function generateRandomCharacters() {
-  const numOfChars = getInput("numOfChars");
-  if (Number(numOfChars) < 0) {
-    throw new TypeError("numOfChars must be a positive integer");
-  }
-  // const startRange = 0x0020;
-  const startRange = getInput("startRange");
-  // const endRange = 0x007e;
-  const endRange = getInput("endRange");
-  if (Number(startRange) > Number(endRange)) {
-    throw new TypeError("startRange must be less than or equal to endRange");
-  }
-  const result: string[] = [];
-
-  for (let i = 0; i < Number(numOfChars); i++) {
-    const randomCodePoint =
-      Math.floor(Math.random() * (Number(endRange) - Number(startRange) + 1)) + Number(startRange);
-    const randomCharacter = String.fromCodePoint(randomCodePoint);
-    result.push(randomCharacter);
-  }
-  console.log(result.join(""));
-  await setOutput("output", result.join(""));
+interface Res {
+  clientMutationId: string;
+  discussion: {
+    id: string;
+  };
 }
 
-generateRandomCharacters();
+export async function markDiscussionCommentAnswer() {
+  const token = getInput("GITHUB_TOKEN");
+  token === "INVALID_TOKEN" && setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+  const commentId = getInput("COMMENT_ID");
+  commentId === "INVALID_COMMENT_ID" && setFailed("Invalid or missing discussionId.");
+
+  graphql = graphql.defaults({
+    headers: {
+      authorization: `token ${token}`,
+    },
+  });
+  try {
+    const query = `mutation {
+      markDiscussionCommentAsAnswer(
+        input: { id: "${commentId}", clientMutationId: "1234" }
+      ) {
+        clientMutationId
+        discussion: {
+          id
+        }
+      }
+    }`;
+    const response: Res = await graphql(query);
+    await setOutput("discussionId", response?.discussion);
+    await setOutput("clientMutationId", response?.clientMutationId);
+  } catch (error: any) {
+    setFailed(error.message);
+  }
+}
+
+if (!process.env.JEST_WORKER_ID) {
+  markDiscussionCommentAnswer();
+}

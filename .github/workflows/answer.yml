@@ -1,0 +1,21 @@
+name: Mark Discussion Comment Answer
+
+on:
+  discussion:
+    types: [answered]
+
+jobs:
+  mark-comment-answer:
+    name: Mark a discussion comment as the answer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Run Mark Discussion Comment Answer
+        id: markanswer
+        uses: ./
+        with:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Show Mark Answer Output
+        run: |
+          echo "discussionId = ${{ steps.autorespond.outputs.discussionId }}"

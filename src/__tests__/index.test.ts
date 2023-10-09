@@ -1,70 +1,76 @@
-import { generateRandomCharacters } from "../index";
+import { markDiscussionCommentAnswer } from "../index";
 import * as core from "@actions/core";
 import { mocked } from "jest-mock";
+import { graphql } from "@octokit/graphql";
 
-// Mock the external dependencies
 jest.mock("@octokit/graphql");
 jest.mock("@actions/core");
-
 const mockedGetInput = mocked(core.getInput);
 const mockedSetOutput = mocked(core.setOutput);
+const mockedSetFailed = mocked(core.setFailed);
+const mockedGraphQL = mocked(graphql);
+let originalEnv: NodeJS.ProcessEnv;
 
 beforeEach(() => {
+  // Store the original process.env object
+  originalEnv = process.env;
   // Clear mock calls and reset any mocked values before each test
   jest.clearAllMocks();
 
   // Mock getInput, setFailed, and setOutput from @actions/core
   jest.mock("@actions/core", () => ({
     getInput: mockedGetInput,
+    setFailed: mockedSetFailed,
     setOutput: mockedSetOutput,
   }));
+  // Mock the GITHUB_EVENT_PATH
+  process.env.GITHUB_EVENT_PATH = "src/event.json";
 });
 
-test("function returns random chars", async () => {
-  // Mock the input values
-  const numOfChars = "100";
-  mockedGetInput.mockReturnValueOnce(numOfChars);
-  mockedGetInput.mockReturnValueOnce("0x0020");
-  mockedGetInput.mockReturnValueOnce("0x007e");
+afterAll(() => {
+  // Restore the original process.env object after testing
+  process.env = originalEnv;
+});
 
-  // Run the `run` function
-  await generateRandomCharacters();
+test("should call run() when JEST_WORKER_ID is not defined", async () => {
+  // Mock process.env to simulate JEST_WORKER_ID not being defined
+  delete process.env.JEST_WORKER_ID;
+
+  mockedGetInput.mockReturnValueOnce("{{ secrets.GITHUB_TOKEN }}");
+  mockedGetInput.mockReturnValueOnce("commentId");
+  mockedGetInput.mockReturnValueOnce("discussion");
+
+  // Mock the GraphQL response
+  const mockedResponse = {
+    clientMutationId: "1234",
+    discussion: {
+      id: "discussionId",
+    },
+  };
+  mockedGraphQL.mockResolvedValueOnce(mockedResponse);
+
+  // Call the conditional block
+  await markDiscussionCommentAnswer();
 
   // Assertions
-  expect(mockedGetInput).toHaveBeenCalledTimes(3);
-  expect(mockedGetInput).toHaveBeenCalledWith("numOfChars");
-  expect(mockedGetInput).toHaveBeenCalledWith("startRange");
-  expect(mockedGetInput).toHaveBeenCalledWith("endRange");
-  expect(mockedSetOutput).toHaveBeenCalledTimes(1);
-  expect(mockedSetOutput).toHaveBeenCalledWith("output", expect.any(String));
-  const lengthRegex = new RegExp(`^.{${numOfChars}}$`);
-  expect(mockedSetOutput).toHaveBeenCalledWith("output", expect.stringMatching(lengthRegex));
+  expect(mockedGetInput).toHaveBeenCalledTimes(2);
+  // expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "commentId");
+  // expect(mockedSetOutput).toHaveBeenCalledWith("discussion", "discussionId");
 });
 
-test("should handle numOfChars = 0", async () => {
-  mockedGetInput.mockReturnValueOnce("0");
-  await generateRandomCharacters();
-  expect(mockedSetOutput).toHaveBeenCalledWith("output", "");
-});
+test("should not call run() when JEST_WORKER_ID is defined", () => {
+  // Mock process.env to simulate JEST_WORKER_ID being defined
+  process.env.JEST_WORKER_ID = "some-worker-id";
 
-it("should handle a negative numOfChars", async () => {
-  mockedGetInput.mockReturnValueOnce("-10");
-  // Expect an error to be thrown, or handle it appropriately in your code.
-  await expect(generateRandomCharacters()).rejects.toThrowError("numOfChars must be a positive integer");
-});
+  // Mock the run function
+  const runSpy = jest.spyOn(core, "setFailed");
 
-it("should handle invalid hexadecimal values", async () => {
-  mockedGetInput.mockReturnValueOnce("100");
-  mockedGetInput.mockReturnValueOnce("invalidStart");
-  mockedGetInput.mockReturnValueOnce("invalidEnd");
-  // Expect an error to be thrown
-  await expect(generateRandomCharacters()).rejects.toThrowError("Invalid code point NaN");
-});
+  // Call the conditional block
+  require("../index"); // This will execute the code block
 
-it("should handle startRange > endRange", async () => {
-  mockedGetInput.mockReturnValueOnce("100");
-  mockedGetInput.mockReturnValueOnce("0x007e"); // End range is smaller
-  mockedGetInput.mockReturnValueOnce("0x0020"); // Start range is greater
-  // Expect an error to be thrown
-  await expect(generateRandomCharacters()).rejects.toThrowError("startRange must be less than or equal to endRange");
+  // Expectations
+  expect(runSpy).not.toHaveBeenCalled();
+
+  // Clean up the spy
+  runSpy.mockRestore();
 });
