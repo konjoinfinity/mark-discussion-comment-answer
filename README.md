@@ -1,4 +1,4 @@
-# Mark Discussion Comment Answer ✔☑✅
+# Mark Discussion Comment Answer ✅
 
 Mark a discussion comment as the answer
 
@@ -18,9 +18,9 @@ In your workflow, to use this github action add a step like this to your workflo
 
 
 ```yaml
-- name: Run Unicode Generator
-  uses: konjoinfinity/random-unicode-text-generator@v1.0.0
-  id: generate-unicode
+- name: Run Mark Discussion 
+  uses: konjoinfinity/mark-discussion-comment-answer@v1.0.0
+  id: mark-answer
   with:
    numOfChars: "50" # Optional - Number of unicode characters to output - Default = "100"
    startRange: "0x1F300" # Optional - Unicode character start range - Default = "0"
