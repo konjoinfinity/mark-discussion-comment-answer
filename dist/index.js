@@ -19,13 +19,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.markDiscussionCommentAnswer = void 0;
 const core_1 = __nccwpck_require__(2186);
 let { graphql } = __nccwpck_require__(8467);
-;
 function markDiscussionCommentAnswer() {
     return __awaiter(this, void 0, void 0, function* () {
         const token = (0, core_1.getInput)("GITHUB_TOKEN");
         token === "INVALID_TOKEN" && (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
-        const commentId = (0, core_1.getInput)("COMMENT_ID");
-        commentId === "INVALID_COMMENT_ID" && (0, core_1.setFailed)("Invalid or missing discussionId.");
+        const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
+        const commentId = eventPayload.comment.node_id;
         graphql = graphql.defaults({
             headers: {
                 authorization: `token ${token}`,
