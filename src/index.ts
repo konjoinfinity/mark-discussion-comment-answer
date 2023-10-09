@@ -11,9 +11,8 @@ interface Res {
 export async function markDiscussionCommentAnswer() {
   const token = getInput("GITHUB_TOKEN");
   token === "INVALID_TOKEN" && setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
-  const commentId = getInput("COMMENT_ID");
-  commentId === "INVALID_COMMENT_ID" && setFailed("Invalid or missing discussionId.");
-
+  const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
+  const commentId = eventPayload.comment.node_id;
   graphql = graphql.defaults({
     headers: {
       authorization: `token ${token}`,

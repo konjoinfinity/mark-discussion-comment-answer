@@ -1,8 +1,8 @@
 name: Mark Discussion Comment Answer
 
 on:
-  discussion:
-    types: [answered]
+  discussion_comment:
+    types: [created]
 
 jobs:
   mark-comment-answer:
@@ -18,4 +18,4 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Show Mark Answer Output
         run: |
-          echo "discussionId = ${{ steps.autorespond.outputs.discussionId }}"
+          echo "discussionId = ${{ steps.markanswer.outputs.discussionId }}"
