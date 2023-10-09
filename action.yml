@@ -13,7 +13,7 @@ inputs:
   GITHUB_TOKEN:
     description: "GitHub personal access token."
     required: false
-    default: ${{ github.token }}
+    default: "${{ github.token }}"
 
 branding:
   icon: "check-circle"
