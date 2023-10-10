@@ -33,6 +33,7 @@ function markDiscussionCommentAnswer() {
                 authorization: `token ${token}`,
             },
         });
+        console.log(graphql);
         try {
             const query = `mutation {
       markDiscussionCommentAsAnswer(
@@ -45,6 +46,7 @@ function markDiscussionCommentAnswer() {
       }
     }`;
             const response = yield graphql(query);
+            console.log(response);
             yield (0, core_1.setOutput)("discussionId", response === null || response === void 0 ? void 0 : response.discussion);
             yield (0, core_1.setOutput)("clientMutationId", response === null || response === void 0 ? void 0 : response.clientMutationId);
         }
