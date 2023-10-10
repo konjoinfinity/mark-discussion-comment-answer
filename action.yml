@@ -7,13 +7,9 @@ runs:
   main: "dist/index.js"
 
 inputs:
-  COMMENT_ID:
-    description: "Comment ID to be marked as the answer."
-    required: true
   GITHUB_TOKEN:
     description: "GitHub personal access token."
-    required: false
-    default: "${{ github.token }}"
+    required: true
 
 branding:
   icon: "check-circle"
