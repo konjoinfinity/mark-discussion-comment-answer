@@ -5,7 +5,7 @@ interface Res {
   clientMutationId: string;
   discussion: {
     id: string;
-  };
+  }
 }
 
 export async function markDiscussionCommentAnswer() {
