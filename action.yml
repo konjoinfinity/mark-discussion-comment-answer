@@ -7,9 +7,10 @@ runs:
   main: "dist/index.js"
 
 inputs:
-  token:
-    description: "GitHub personal access token."
-    required: true
+  GITHUB_TOKEN:
+    description: "The GitHub token for authentication."
+    required: false
+    default: "{{ secrets.GITHUB_TOKEN }}"
 
 branding:
   icon: "check-circle"

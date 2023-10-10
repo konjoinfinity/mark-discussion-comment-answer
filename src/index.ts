@@ -9,7 +9,8 @@ interface Res {
 }
 
 export async function markDiscussionCommentAnswer() {
-  const token = getInput("token");
+  const token = getInput("GITHUB_TOKEN");
+  console.log(token);
   token === "INVALID_TOKEN" && setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
   const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
   const commentId = eventPayload.comment.node_id;
