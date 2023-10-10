@@ -2,9 +2,11 @@ import { getInput, setFailed, setOutput } from "@actions/core";
 import { graphql } from "@octokit/graphql";
 
 interface Res {
-  clientMutationId: string;
-  discussion: {
-    id: string;
+  markDiscussionCommentAsAnswer: {
+    clientMutationId: string;
+    discussion: {
+      id: string;
+    };
   };
 }
 
@@ -34,8 +36,8 @@ export async function markDiscussionCommentAnswer() {
       },
     });
     console.log(response);
-    await setOutput("discussionId", response?.discussion);
-    await setOutput("clientMutationId", response?.clientMutationId);
+    await setOutput("discussionId", response?.markDiscussionCommentAsAnswer?.discussion);
+    await setOutput("clientMutationId", response?.markDiscussionCommentAsAnswer.clientMutationId);
   } catch (error: any) {
     await setFailed(error.message);
   }

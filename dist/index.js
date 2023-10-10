@@ -18,9 +18,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.markDiscussionCommentAnswer = void 0;
 const core_1 = __nccwpck_require__(2186);
-let { graphql } = __nccwpck_require__(8467);
+const graphql_1 = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const token = yield (0, core_1.getInput)("GITHUB_TOKEN");
         console.log(token);
@@ -29,14 +28,9 @@ function markDiscussionCommentAnswer() {
         console.log(eventPayload);
         const commentId = eventPayload.comment.node_id;
         console.log(commentId);
-        graphql = yield graphql.defaults({
-            headers: {
-                authorization: `token ${token}`,
-            },
-        });
-        console.log((_b = (_a = graphql === null || graphql === void 0 ? void 0 : graphql.endpoint) === null || _a === void 0 ? void 0 : _a.DEFAULTS) === null || _b === void 0 ? void 0 : _b.headers);
         try {
-            const query = `mutation {
+            const response = yield (0, graphql_1.graphql)({
+                query: `mutation {
       markDiscussionCommentAsAnswer(
         input: { id: "${commentId}", clientMutationId: "1234" }
       ) {
@@ -45,9 +39,11 @@ function markDiscussionCommentAnswer() {
           id
         }
       }
-    }`;
-            console.log(query);
-            const response = yield graphql(query);
+    }`,
+                headers: {
+                    authorization: `token ${token}`,
+                },
+            });
             console.log(response);
             yield (0, core_1.setOutput)("discussionId", response === null || response === void 0 ? void 0 : response.discussion);
             yield (0, core_1.setOutput)("clientMutationId", response === null || response === void 0 ? void 0 : response.clientMutationId);
