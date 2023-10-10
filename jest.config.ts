@@ -9,7 +9,7 @@ export default {
   coverageDirectory: "coverage",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
-    "^src/(.*)$": "<rootDir>/src/$1",
+    "^src/__tests__/(.*)$": "<rootDir>/src/__tests__/$1",
   },
   moduleDirectories: ["node_modules", "src"],
   testMatch: ["**/__tests__/**/*.test.ts"],

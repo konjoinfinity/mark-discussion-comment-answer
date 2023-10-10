@@ -24,7 +24,7 @@ beforeEach(() => {
     setOutput: mockedSetOutput,
   }));
   // Mock the GITHUB_EVENT_PATH
-  process.env.GITHUB_EVENT_PATH = "src/event.json";
+  process.env.GITHUB_EVENT_PATH = "src/__tests__/event.json";
 });
 
 afterAll(() => {

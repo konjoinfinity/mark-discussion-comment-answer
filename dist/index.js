@@ -22,13 +22,28 @@ const graphql_1 = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
-        const token = yield (0, core_1.getInput)("GH_TOKEN");
-        console.log(token);
-        token === "INVALID_TOKEN" && (yield (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN"));
-        const eventPayload = yield require(String(process.env.GITHUB_EVENT_PATH));
+        const token = (0, core_1.getInput)("GH_TOKEN");
+        console.log(`TOKEN = ${token}`);
+        const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
+        console.log(eventPayload.discussion);
         console.log(eventPayload);
         const commentId = eventPayload.comment.node_id;
         console.log(commentId);
+        if (!eventPayload.discussion.category.is_answerable) {
+            console.log("Not answerable");
+            (0, core_1.setFailed)("Discussion category is not answerable.");
+            return;
+        }
+        if (eventPayload.discussion.answer_chosen_at) {
+            console.log("Already answered");
+            (0, core_1.setFailed)("Discussion is already answered.");
+            return;
+        }
+        if (token === "{{ INVALID_TOKEN }}") {
+            console.log("Invalid Github Token");
+            (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+            return;
+        }
         try {
             const response = yield (0, graphql_1.graphql)({
                 query: `mutation {
