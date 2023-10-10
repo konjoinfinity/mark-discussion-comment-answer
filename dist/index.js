@@ -22,7 +22,7 @@ const graphql_1 = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
-        const token = yield (0, core_1.getInput)("GITHUB_TOKEN");
+        const token = yield (0, core_1.getInput)("GH_TOKEN");
         console.log(token);
         token === "INVALID_TOKEN" && (yield (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN"));
         const eventPayload = yield require(String(process.env.GITHUB_EVENT_PATH));
