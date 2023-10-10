@@ -1,5 +1,5 @@
 import { getInput, setFailed, setOutput } from "@actions/core";
-let { graphql } = require("@octokit/graphql");
+import { graphql } from "@octokit/graphql";
 
 interface Res {
   clientMutationId: string;
@@ -16,13 +16,9 @@ export async function markDiscussionCommentAnswer() {
   console.log(eventPayload);
   const commentId = eventPayload.comment.node_id;
   console.log(commentId);
-  graphql = await graphql.defaults({
-    headers: {
-      authorization: `token ${token}`,
-    },
-  });
-  console.log(graphql?.endpoint?.DEFAULTS?.headers);
+  
   try {
+    const response: Res = await graphql({
     const query = `mutation {
       markDiscussionCommentAsAnswer(
         input: { id: "${commentId}", clientMutationId: "1234" }
@@ -32,9 +28,11 @@ export async function markDiscussionCommentAnswer() {
           id
         }
       }
-    }`;
-    console.log(query);
-    const response: Res = await graphql(query);
+    }`,
+      headers: {
+        authorization: `token ${token}`,
+      },
+});
     console.log(response);
     await setOutput("discussionId", response?.discussion);
     await setOutput("clientMutationId", response?.clientMutationId);
