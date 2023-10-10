@@ -11,11 +11,13 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        
       - name: Run Mark Discussion Comment Answer
         id: markanswer
         uses: ./
         with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.DISCUSS_TOKEN }}"
+          
       - name: Show Mark Answer Output
         run: |
           echo "discussionId = ${{ steps.markanswer.outputs.discussionId }}"
