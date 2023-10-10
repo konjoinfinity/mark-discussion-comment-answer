@@ -21,7 +21,7 @@ export async function markDiscussionCommentAnswer() {
       authorization: `token ${token}`,
     },
   });
-  console.log(graphql?.headers);
+  console.log(graphql?.endpoint?.DEFAULTS?.headers);
   try {
     const query = `mutation {
       markDiscussionCommentAsAnswer(
