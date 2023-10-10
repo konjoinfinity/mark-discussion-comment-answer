@@ -7,7 +7,7 @@ runs:
   main: "dist/index.js"
 
 inputs:
-  GITHUB_TOKEN:
+  GH_TOKEN:
     description: "The GitHub token for authentication."
     required: false
     default: "{{ secrets.GITHUB_TOKEN }}"

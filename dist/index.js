@@ -20,7 +20,7 @@ exports.markDiscussionCommentAnswer = void 0;
 const core_1 = __nccwpck_require__(2186);
 const graphql_1 = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
-    var _a;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const token = yield (0, core_1.getInput)("GITHUB_TOKEN");
         console.log(token);
@@ -35,12 +35,10 @@ function markDiscussionCommentAnswer() {
       markDiscussionCommentAsAnswer(
         input: { id: "${commentId}", clientMutationId: "1234" }
       ) {
-        markDiscussionCommentAsAnswer: {
         clientMutationId
-        discussion: {
+        discussion {
           id
         }
-      }
       }
     }`,
                 headers: {
@@ -49,7 +47,7 @@ function markDiscussionCommentAnswer() {
             });
             console.log(response);
             yield (0, core_1.setOutput)("discussionId", (_a = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _a === void 0 ? void 0 : _a.discussion);
-            yield (0, core_1.setOutput)("clientMutationId", response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer.clientMutationId);
+            yield (0, core_1.setOutput)("clientMutationId", (_b = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _b === void 0 ? void 0 : _b.clientMutationId);
         }
         catch (error) {
             yield (0, core_1.setFailed)(error.message);

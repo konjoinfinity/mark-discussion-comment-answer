@@ -11,7 +11,7 @@ interface Res {
 }
 
 export async function markDiscussionCommentAnswer() {
-  const token = await getInput("GITHUB_TOKEN");
+  const token = await getInput("GH_TOKEN");
   console.log(token);
   token === "INVALID_TOKEN" && (await setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN"));
   const eventPayload = await require(String(process.env.GITHUB_EVENT_PATH));
