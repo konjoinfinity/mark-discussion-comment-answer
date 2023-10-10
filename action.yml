@@ -7,7 +7,7 @@ runs:
   main: "dist/index.js"
 
 inputs:
-  GITHUB_TOKEN:
+  token:
     description: "GitHub personal access token."
     required: true
 
