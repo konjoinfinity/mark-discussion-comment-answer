@@ -30,8 +30,8 @@ function markDiscussionCommentAnswer() {
         console.log(commentId);
         graphql = yield graphql.defaults({
             headers: {
-                authorization: `token ${token}`,
-            },
+                authorization: `token ${token}`
+            }
         });
         console.log(graphql);
         try {
