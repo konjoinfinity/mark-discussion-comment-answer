@@ -16,7 +16,7 @@ jobs:
         id: markanswer
         uses: ./
         with:
-          GITHUB_TOKEN: "${{ secrets.DISCUSS_TOKEN }}"
+          GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}"
           
       - name: Show Mark Answer Output
         run: |
