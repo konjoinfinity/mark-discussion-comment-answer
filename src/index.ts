@@ -18,7 +18,7 @@ export async function markDiscussionCommentAnswer() {
   console.log(commentId);
   graphql = await graphql.defaults({
     headers: {
-      authorization: `token ${token}`,
+      authorization: `token ${token}`
     },
   });
   console.log(graphql);
