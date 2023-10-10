@@ -25,7 +25,9 @@ function markDiscussionCommentAnswer() {
         console.log(token);
         token === "INVALID_TOKEN" && (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
         const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
+        console.log(eventPayload);
         const commentId = eventPayload.comment.node_id;
+        console.log(commentId);
         graphql = graphql.defaults({
             headers: {
                 authorization: `token ${token}`,

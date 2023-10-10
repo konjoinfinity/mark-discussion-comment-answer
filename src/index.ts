@@ -5,18 +5,18 @@ interface Res {
   clientMutationId: string;
   discussion: {
     id: string;
-  }
+  };
 }
 
 export async function markDiscussionCommentAnswer() {
-  const token = getInput("GITHUB_TOKEN");
+  const token = await getInput("GITHUB_TOKEN");
   console.log(token);
-  token === "INVALID_TOKEN" && setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
-  const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
+  token === "INVALID_TOKEN" && (await setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN"));
+  const eventPayload = await require(String(process.env.GITHUB_EVENT_PATH));
   console.log(eventPayload);
   const commentId = eventPayload.comment.node_id;
   console.log(commentId);
-  graphql = graphql.defaults({
+  graphql = await graphql.defaults({
     headers: {
       authorization: `token ${token}`,
     },
@@ -36,7 +36,7 @@ export async function markDiscussionCommentAnswer() {
     await setOutput("discussionId", response?.discussion);
     await setOutput("clientMutationId", response?.clientMutationId);
   } catch (error: any) {
-    setFailed(error.message);
+    await setFailed(error.message);
   }
 }
 
