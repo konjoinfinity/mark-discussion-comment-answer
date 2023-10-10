@@ -21,14 +21,14 @@ const core_1 = __nccwpck_require__(2186);
 let { graphql } = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
     return __awaiter(this, void 0, void 0, function* () {
-        const token = (0, core_1.getInput)("GITHUB_TOKEN");
+        const token = yield (0, core_1.getInput)("GITHUB_TOKEN");
         console.log(token);
-        token === "INVALID_TOKEN" && (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
-        const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
+        token === "INVALID_TOKEN" && (yield (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN"));
+        const eventPayload = yield require(String(process.env.GITHUB_EVENT_PATH));
         console.log(eventPayload);
         const commentId = eventPayload.comment.node_id;
         console.log(commentId);
-        graphql = graphql.defaults({
+        graphql = yield graphql.defaults({
             headers: {
                 authorization: `token ${token}`,
             },
@@ -49,7 +49,7 @@ function markDiscussionCommentAnswer() {
             yield (0, core_1.setOutput)("clientMutationId", response === null || response === void 0 ? void 0 : response.clientMutationId);
         }
         catch (error) {
-            (0, core_1.setFailed)(error.message);
+            yield (0, core_1.setFailed)(error.message);
         }
     });
 }

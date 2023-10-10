@@ -21,6 +21,7 @@ export async function markDiscussionCommentAnswer() {
       authorization: `token ${token}`,
     },
   });
+  console.log(graphql);
   try {
     const query = `mutation {
       markDiscussionCommentAsAnswer(
@@ -33,6 +34,7 @@ export async function markDiscussionCommentAnswer() {
       }
     }`;
     const response: Res = await graphql(query);
+    console.log(response);
     await setOutput("discussionId", response?.discussion);
     await setOutput("clientMutationId", response?.clientMutationId);
   } catch (error: any) {
