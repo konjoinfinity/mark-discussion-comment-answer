@@ -16,10 +16,10 @@ export async function markDiscussionCommentAnswer() {
   console.log(eventPayload);
   const commentId = eventPayload.comment.node_id;
   console.log(commentId);
-  
+
   try {
     const response: Res = await graphql({
-    const query = `mutation {
+      query: `mutation {
       markDiscussionCommentAsAnswer(
         input: { id: "${commentId}", clientMutationId: "1234" }
       ) {
@@ -32,7 +32,7 @@ export async function markDiscussionCommentAnswer() {
       headers: {
         authorization: `token ${token}`,
       },
-});
+    });
     console.log(response);
     await setOutput("discussionId", response?.discussion);
     await setOutput("clientMutationId", response?.clientMutationId);

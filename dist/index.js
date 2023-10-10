@@ -20,6 +20,7 @@ exports.markDiscussionCommentAnswer = void 0;
 const core_1 = __nccwpck_require__(2186);
 let { graphql } = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const token = yield (0, core_1.getInput)("GITHUB_TOKEN");
         console.log(token);
@@ -30,10 +31,10 @@ function markDiscussionCommentAnswer() {
         console.log(commentId);
         graphql = yield graphql.defaults({
             headers: {
-                authorization: `token ${token}`
+                authorization: `token ${token}`,
             },
         });
-        console.log(graphql === null || graphql === void 0 ? void 0 : graphql.headers);
+        console.log((_b = (_a = graphql === null || graphql === void 0 ? void 0 : graphql.endpoint) === null || _a === void 0 ? void 0 : _a.DEFAULTS) === null || _b === void 0 ? void 0 : _b.headers);
         try {
             const query = `mutation {
       markDiscussionCommentAsAnswer(
