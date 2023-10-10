@@ -10,6 +10,26 @@ interface Res {
   };
 }
 
+interface Cat {
+  data: {
+    discussion: {
+      id: string; 
+      category: {
+        isAnswerable: string;
+      }
+    }
+  }
+}
+
+interface Answer {
+  data: {
+    discussion: {
+      id: string;
+      answerChosenAt: string;
+    }
+  }
+}
+
 export async function markDiscussionCommentAnswer() {
   const token = getInput("GH_TOKEN");
   console.log(token);
@@ -18,6 +38,44 @@ export async function markDiscussionCommentAnswer() {
   console.log(eventPayload);
   const commentId = eventPayload.comment.node_id;
   console.log(commentId);
+
+  // Get the discussion category
+  const discussionCategory: Cat = await graphql({
+    query: `query {
+      discussion(id: ${eventPayload.discussion.id}) {
+        category {
+          isAnswerable
+        }
+      }
+    }`,
+    headers: {
+      authorization: `token ${token}`,
+    },
+  });
+
+  // If the discussion category is not answerable, set the output to failed
+  if (!discussionCategory.data.discussion.category.isAnswerable) {
+    setFailed("Discussion category is not answerable.");
+    return;
+  }
+
+  // Check if the discussion is already answered
+  const discussion: Answer = await graphql({
+    query: `query {
+      discussion(id: ${eventPayload.discussion.id}) {
+        answerChosenAt
+      }
+    }`,
+    headers: {
+      authorization: `token ${token}`,
+    },
+  });
+
+  // If the discussion is already answered, set the output to failed
+  if (discussion.data.discussion.answerChosenAt) {
+    setFailed("Discussion is already answered.");
+    return;
+  }
 
   try {
     const response: Res = await graphql({
