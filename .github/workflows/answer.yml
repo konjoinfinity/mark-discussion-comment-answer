@@ -14,7 +14,7 @@ jobs:
         
       - name: Run Mark Discussion Comment Answer
         id: markanswer
-        uses: ./
+        uses: ./action
         with:
           GITHUB_TOKEN: ${{ secrets.DISCUSS_TOKEN }}
           
