@@ -25,12 +25,10 @@ export async function markDiscussionCommentAnswer() {
       markDiscussionCommentAsAnswer(
         input: { id: "${commentId}", clientMutationId: "1234" }
       ) {
-        markDiscussionCommentAsAnswer: {
         clientMutationId
-        discussion: {
+        discussion {
           id
         }
-      }
       }
     }`,
       headers: {
@@ -39,7 +37,7 @@ export async function markDiscussionCommentAnswer() {
     });
     console.log(response);
     await setOutput("discussionId", response?.markDiscussionCommentAsAnswer?.discussion);
-    await setOutput("clientMutationId", response?.markDiscussionCommentAsAnswer.clientMutationId);
+    await setOutput("clientMutationId", response?.markDiscussionCommentAsAnswer?.clientMutationId);
   } catch (error: any) {
     await setFailed(error.message);
   }

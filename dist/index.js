@@ -35,10 +35,12 @@ function markDiscussionCommentAnswer() {
       markDiscussionCommentAsAnswer(
         input: { id: "${commentId}", clientMutationId: "1234" }
       ) {
+        markDiscussionCommentAsAnswer: {
         clientMutationId
         discussion: {
           id
         }
+      }
       }
     }`,
                 headers: {
