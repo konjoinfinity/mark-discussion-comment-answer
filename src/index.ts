@@ -66,6 +66,9 @@ export async function markDiscussionCommentAnswer() {
         }
       }
     }`,
+      headers: {
+        authorization: `token ${token}`,
+      },
     });
     console.log(checkComments);
   } catch (err) {

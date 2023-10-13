@@ -36,7 +36,7 @@ function markDiscussionCommentAnswer() {
         try {
             const checkComments = yield (0, graphql_1.graphql)({
                 query: `query {
-      repository(owner: ${repoOwner}, name: ${repoName} ) {
+      repository(owner: "${repoOwner}", name: "${repoName}" ) {
         discussions(first: 1, answered: false) {
           edges {
             node {
@@ -75,7 +75,7 @@ function markDiscussionCommentAnswer() {
           }
         }
       }
-    }`
+    }`,
             });
             console.log(checkComments);
         }
