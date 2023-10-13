@@ -1,5 +1,5 @@
 name: "Mark Discussion Comment Answer ✅"
-description: "Create random unicode text from an input range"
+description: "Mark discussion comments as answers based on reaction threshold."
 author: "Wesley Scholl"
 
 runs:
