@@ -2,7 +2,7 @@
 
 Mark a discussion comment as the answer
 
-[![Tests](https://img.shields.io/badge/tests-passing-gree.svg?logo=typescript&colorA=24292e&logoColor=white)](https://github.com/konjoinfinity/random-unicode-text-generator/blob/main/src/__tests__/index.test.ts)  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/konjoinfinity/random-unicode-text-generator/.github%2Fworkflows%2Fnode.js.yml?colorA=24292e&logo=github) ![GitHub Release Date - Published_At](https://img.shields.io/github/release-date/konjoinfinity/random-unicode-text-generator?colorA=24292e&logo=github) [![coverage badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/wesleyscholl/fce8ce592425f8cc73ea124451808ce3/raw/450280b16d4e7a800f402f2233b224a2a37c7086/github-action-base-ts__heads_main.json?&colorA=24292e&label=test%20coverage)](https://gist.github.com/wesleyscholl/10f0b77400703c4a65f38434106adf2d)  [![GitHub Marketplace](https://img.shields.io/badge/marketplace-Random%20Unicode%20Text%20Generator-blue.svg?colorA=24292e&colorB=7F00FF&style=flat&longCache=true&logo=githubactions&logoColor=white)](https://github.com/marketplace/actions/random-unicode-text-generator) ![GitHub package.json dynamic](https://img.shields.io/github/package-json/name/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=github) ![Dynamic YAML Badge](https://img.shields.io/badge/dynamic/yaml?url=https://raw.githubusercontent.com/konjoinfinity/random-unicode-text-generator/main/action.yml&query=%24.description&colorA=24292e&colorB=7F00FF&logo=yaml&label=description) [![Code Style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?logo=prettier&colorA=24292e&logoColor=white&colorB=7F00FF)](https://github.com/prettier/prettier) [![Code Linter: ESLint](https://img.shields.io/badge/code_linter-eslint-ff69b4.svg?logo=eslint&colorA=24292e&logoColor=white&colorB=7F00FF)](https://github.com/prettier/prettier) ![GitHub top language](https://img.shields.io/github/languages/top/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=typescript&logoColor=white) ![GitHub contributors](https://img.shields.io/github/contributors/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=github&logoColor=white)  ![GitHub Discussions](https://img.shields.io/github/discussions/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=github&logoColor=white) ![GitHub Release (with filter)](https://img.shields.io/github/v/release/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=github)  ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=github) ![GitHub repo size](https://img.shields.io/github/repo-size/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=github) ![GitHub package.json dynamic](https://img.shields.io/github/package-json/author/konjoinfinity/random-unicode-text-generator?colorA=24292e&colorB=7F00FF&logo=github) [![MIT](https://img.shields.io/badge/license-MIT-blue?colorA=24292e&colorB=7F00FF&logo=github)](https://raw.githubusercontent.com/konjoinfinity/random-unicode-text-generator/main/LICENSE)
+[![Tests](https://img.shields.io/badge/tests-passing-gree.svg?logo=typescript&colorA=24292e&logoColor=white)](https://github.com/konjoinfinity/mark-discussion-comment-answer/blob/main/src/__tests__/index.test.ts)  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/konjoinfinity/mark-discussion-comment-answer/.github%2Fworkflows%2Fnode.js.yml?colorA=24292e&logo=github) ![GitHub Release Date - Published_At](https://img.shields.io/github/release-date/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&logo=github) [![coverage badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/wesleyscholl/fce8ce592425f8cc73ea124451808ce3/raw/450280b16d4e7a800f402f2233b224a2a37c7086/github-action-base-ts__heads_main.json?&colorA=24292e&label=test%20coverage)](https://gist.github.com/wesleyscholl/10f0b77400703c4a65f38434106adf2d)  [![GitHub Marketplace](https://img.shields.io/badge/marketplace-Random%20Unicode%20Text%20Generator-blue.svg?colorA=24292e&colorB=7F00FF&style=flat&longCache=true&logo=githubactions&logoColor=white)](https://github.com/marketplace/actions/mark-discussion-comment-answer) ![GitHub package.json dynamic](https://img.shields.io/github/package-json/name/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=github) ![Dynamic YAML Badge](https://img.shields.io/badge/dynamic/yaml?url=https://raw.githubusercontent.com/konjoinfinity/mark-discussion-comment-answer/main/action.yml&query=%24.description&colorA=24292e&colorB=7F00FF&logo=yaml&label=description) [![Code Style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?logo=prettier&colorA=24292e&logoColor=white&colorB=7F00FF)](https://github.com/prettier/prettier) [![Code Linter: ESLint](https://img.shields.io/badge/code_linter-eslint-ff69b4.svg?logo=eslint&colorA=24292e&logoColor=white&colorB=7F00FF)](https://github.com/prettier/prettier) ![GitHub top language](https://img.shields.io/github/languages/top/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=typescript&logoColor=white) ![GitHub contributors](https://img.shields.io/github/contributors/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=github&logoColor=white)  ![GitHub Discussions](https://img.shields.io/github/discussions/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=github&logoColor=white) ![GitHub Release (with filter)](https://img.shields.io/github/v/release/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=github)  ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=github) ![GitHub repo size](https://img.shields.io/github/repo-size/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=github) ![GitHub package.json dynamic](https://img.shields.io/github/package-json/author/konjoinfinity/mark-discussion-comment-answer?colorA=24292e&colorB=7F00FF&logo=github) [![MIT](https://img.shields.io/badge/license-MIT-blue?colorA=24292e&colorB=7F00FF&logo=github)](https://raw.githubusercontent.com/konjoinfinity/mark-discussion-comment-answer/main/LICENSE)
 
 
 
@@ -18,18 +18,23 @@ In your workflow, to use this github action add a step like this to your workflo
 
 
 ```yaml
-- name: Run Mark Discussion 
-  uses: konjoinfinity/mark-discussion-comment-answer@v1.0.0
-  id: mark-answer
-  with:
-   numOfChars: "50" # Optional - Number of unicode characters to output - Default = "100"
-   startRange: "0x1F300" # Optional - Unicode character start range - Default = "0"
-   endRange: "0x1F4FF" # Optional - Unicode character end range - Default = "50000"        
+      - name: Run Mark Discussion Comment Answer
+        id: markanswer
+        uses: konjoinfinity/mark-discussion-comment-answer@v1.0.x
+        with:
+          GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}"    
 ```     
 
 ##### Example Output
 ```bash
-👒🍎🍇👿🏜💴🏝📸🌤🎛💌📅🐙🌬🏿🏾🏴🎵🍡💩👗🍘🍩🐎🐀🏢🐿💧💧💴🏭🌘📌🏞🎡🎴👑💵🐉🎱🌄👦🌉👼🏚🍴📺🐁🐒🍛
+DC_kwDOKczwv84AbnqH
+{
+  markDiscussionCommentAsAnswer: {
+    clientMutationId: '1234',
+    discussion: { id: 'D_kwDOKczwv84AV0aF' }
+  }
+}
+discussionId = {id:D_kwDOKczwv84AV0aF}
 ```
 
 ## Requirements
@@ -45,9 +50,8 @@ No extra configuration required to run this GitHub Action.
 
 | Name | Type | Description | Requried? | Default |
 | --- | --- | --- | --- | --- |
-| `numOfChars` | String | Number of unicode characters to output. | **No** | `"100"` | 
-| `startRange` | String  | Unicode character start range. Can be an hexadecimal or number (Ex. `"2345"`, `"0x1F300"`) | **No** | `"0"` |
-| `endRange` | String | Unicode character end range. Can be an hexadecimal or number (Ex. `"25000"`, `"0x1F4FF"`) | **No** | `"50000"` |
+| `GH_TOKEN` | String | A GitHub PAT is required, but the default is sufficient for public repos. For private repos, ensure you create a PAT that has discussion: write and repo: write, then store it as an action secret for usage within the workflow. See more details about tokens here - [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).  | **No** | `"${{ secrets.GITHUB_TOKEN }}"` | 
+| `reaction_threshold` | Number  | Number of positive comment reactions required to mark as an answer. (Ex. `3`, `10`) | **No** | `0` |
 
 
 
@@ -56,7 +60,7 @@ No extra configuration required to run this GitHub Action.
 
 | Name | Description | How To Access |
 | --- | --- | --- |
-| `output` | Unicode text ouput generated by the action. | `${{ steps.<your-step>.outputs.output}}` |
+| `discussionId` | Discussion ID where the marked as answered comment resides. | `${{ steps.<your-step>.outputs.discussionId}}` |
 
 
 
@@ -66,7 +70,7 @@ No extra configuration required to run this GitHub Action.
 ```yml
 - name: Show Output
   run: |
-    echo ${{ steps.<your-step>.outputs.output }}
+    echo ${{ steps.<your-step>.outputs.discussionId }}
 ```
 
 
@@ -77,37 +81,46 @@ No extra configuration required to run this GitHub Action.
 Link to [workflow](https://raw.githubusercontent.com/wesleyscholl/auto/main/.github/workflows/new.yaml)
 
 ```yaml
-name: Create Random Chinese From Unicode
+name: Mark Discussion Comment Answer
 
-on: push
+on:
+  discussion_comment:
+    types: [created]
 
 jobs:
-  generate-unicode:
+  mark-comment-answer:
+    name: Mark a discussion comment as the answer
     runs-on: ubuntu-latest
     steps:
-
-      - name: Create Random Chinese
-        id: createchinese
-        uses: konjoinfinity/random-unicode-text-generator@v1.0.0
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        
+      - name: Run Mark Discussion Comment Answer
+        id: markanswer
+        uses: konjoinfinity/mark-discussion-comment-answer@v1.0.9
         with:
-          numOfChars: "50"
-          startRange: "0x4e00"
-          endRange: "0x9fff"
-
-      - name: Show Output
+          GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}" # PAT required for private repos
+          
+      - name: Show Mark Answer Output
         run: |
-          echo ${{ steps.createchinese.outputs.output }}
+          echo "discussionId = ${{ steps.markanswer.outputs.discussionId }}"
 ```
 
 ##### Example Output
-```yaml
-偼岪訸铪贠傩攚李抉表樸鎅勝傒谦櫥擝傝廞榻菸慺鯁鲺屗穀飾鈾楟惒娛宖噲淤瘁伹昇鼋弛螟停先铊奇綑嚠涫噝怲巳
+```js
+{
+  markDiscussionCommentAsAnswer: {
+    clientMutationId: '1234',
+    discussion: { id: 'D_kwDOKczwv84AV0aF' }
+  }
+}
 ```
 
 ## Credits
 
-- [List of Unicode Characters](https://en.wikipedia.org/wiki/List_of_Unicode_characters)
+- [Using the GraphQL API for Discussions](https://docs.github.com/en/graphql/guides/using-the-graphql-api-for-discussions)
+- [GitHub GraphQL Explorer](https://docs.github.com/en/graphql/overview/explorer)
 
-### Inspired by:
+#### Inspired by:
 - [Create and Publish a GitHub Action in Typescript - Leonardo Montini](https://leonardomontini.dev/typescript-github-action/)
-- [Random Unicode](https://catonmat.net/tools/generate-random-unicode)
+- [Discussion Autoresponder - GitHub Action](https://github.com/marketplace/actions/discussion-auto-responder)
