@@ -86,9 +86,6 @@ function markDiscussionCommentAnswer() {
               }
             }
           }
-          nodes {
-            id
-          }
         }
       }
     }`,
@@ -98,7 +95,7 @@ function markDiscussionCommentAnswer() {
             });
             console.log(checkComments);
             console.log("==========================================");
-            console.log(checkComments.repository.discussions.nodes);
+            console.log(checkComments.repository.discussions.edges);
             console.log("==========================================");
         }
         catch (err) {

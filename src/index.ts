@@ -88,6 +88,9 @@ export async function markDiscussionCommentAnswer() {
     });
     console.log(checkComments);
     console.log("==========================================");
+    console.log(checkComments.repository.discussions.nodes);
+    console.log("==========================================");
+    console.log("==========================================");
     console.log(checkComments.repository.discussions.edges);
     console.log("==========================================");
   } catch (err) {
