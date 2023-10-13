@@ -33,7 +33,6 @@ function markDiscussionCommentAnswer() {
         console.log(repoName);
         const repoOwner = eventPayload.repository.owner.login;
         console.log(repoOwner);
-        const repoToken = "${{ secrets.GITHUB_TOKEN }}";
         try {
             console.log(token);
             const checkComments = yield (0, graphql_1.graphql)({
@@ -79,7 +78,7 @@ function markDiscussionCommentAnswer() {
       }
     }`,
                 headers: {
-                    authorization: `token ${repoToken}`,
+                    authorization: `token ${token}`,
                 },
             });
             console.log(checkComments);

@@ -23,6 +23,24 @@ export async function markDiscussionCommentAnswer() {
   const repoOwner = eventPayload.repository.owner.login;
   console.log(repoOwner);
 
+  if (!eventPayload.discussion.category.is_answerable) {
+    console.log("Not answerable");
+    setFailed("Discussion category is not answerable.");
+    return;
+  }
+
+  if (eventPayload.discussion.answer_chosen_at) {
+    console.log("Already answered");
+    setFailed("Discussion is already answered.");
+    return;
+  }
+
+  if (token === "{{ INVALID_TOKEN }}") {
+    console.log("Invalid Github Token");
+    setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+    return;
+  }
+
   try {
     console.log(token);
     const checkComments: any = await graphql({
@@ -77,24 +95,6 @@ export async function markDiscussionCommentAnswer() {
     console.log("==========================================");
   } catch (err) {
     console.log(err);
-  }
-
-  if (!eventPayload.discussion.category.is_answerable) {
-    console.log("Not answerable");
-    setFailed("Discussion category is not answerable.");
-    return;
-  }
-
-  if (eventPayload.discussion.answer_chosen_at) {
-    console.log("Already answered");
-    setFailed("Discussion is already answered.");
-    return;
-  }
-
-  if (token === "{{ INVALID_TOKEN }}") {
-    console.log("Invalid Github Token");
-    setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
-    return;
   }
 
   try {
