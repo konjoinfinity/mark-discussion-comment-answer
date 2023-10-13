@@ -95,7 +95,8 @@ function markDiscussionCommentAnswer() {
             });
             console.log(checkComments);
             console.log("==========================================");
-            console.log(checkComments.repository.discussions.nodes);
+            const checkCommentsString = JSON.stringify(checkComments);
+            console.log(checkCommentsString);
             console.log("==========================================");
             console.log("==========================================");
             console.log(checkComments.repository.discussions.edges);
