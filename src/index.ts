@@ -88,6 +88,10 @@ export async function markDiscussionCommentAnswer() {
     });
     console.log(checkComments);
     console.log("==========================================");
+    const checkCommentsString = JSON.stringify(checkComments);
+    console.log(checkCommentsString);
+    console.log("==========================================");
+    console.log("==========================================");
     console.log(checkComments.repository.discussions.nodes);
     console.log("==========================================");
     console.log("==========================================");
