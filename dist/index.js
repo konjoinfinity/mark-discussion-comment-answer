@@ -20,7 +20,7 @@ exports.markDiscussionCommentAnswer = void 0;
 const core_1 = __nccwpck_require__(2186);
 const graphql_1 = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
-    var _a, _b;
+    var _a, _b, _c, _d, _e;
     return __awaiter(this, void 0, void 0, function* () {
         const token = (0, core_1.getInput)("GH_TOKEN");
         console.log(`TOKEN = ${token}`);
@@ -99,7 +99,7 @@ function markDiscussionCommentAnswer() {
             console.log(checkCommentsString);
             console.log("==========================================");
             console.log("==========================================");
-            console.log(checkComments.repository.discussions.nodes);
+            console.log((_c = (_b = (_a = checkComments.repository.discussions.edges[0]) === null || _a === void 0 ? void 0 : _a.node) === null || _b === void 0 ? void 0 : _b.comments) === null || _c === void 0 ? void 0 : _c.edges);
             console.log("==========================================");
             console.log("==========================================");
             console.log(checkComments.repository.discussions.edges);
@@ -125,8 +125,8 @@ function markDiscussionCommentAnswer() {
                 },
             });
             console.log(response);
-            yield (0, core_1.setOutput)("discussionId", (_a = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _a === void 0 ? void 0 : _a.discussion);
-            yield (0, core_1.setOutput)("clientMutationId", (_b = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _b === void 0 ? void 0 : _b.clientMutationId);
+            yield (0, core_1.setOutput)("discussionId", (_d = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _d === void 0 ? void 0 : _d.discussion);
+            yield (0, core_1.setOutput)("clientMutationId", (_e = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _e === void 0 ? void 0 : _e.clientMutationId);
         }
         catch (error) {
             yield (0, core_1.setFailed)(error.message);
