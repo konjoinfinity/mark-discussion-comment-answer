@@ -76,6 +76,9 @@ function markDiscussionCommentAnswer() {
         }
       }
     }`,
+                headers: {
+                    authorization: `token ${token}`,
+                },
             });
             console.log(checkComments);
         }
