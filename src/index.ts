@@ -22,7 +22,6 @@ export async function markDiscussionCommentAnswer() {
   console.log(repoName);
   const repoOwner = eventPayload.repository.owner.login;
   console.log(repoOwner);
-  const repoToken = "${{ secrets.GITHUB_TOKEN }}";
 
   try {
     console.log(token);
@@ -69,7 +68,7 @@ export async function markDiscussionCommentAnswer() {
       }
     }`,
       headers: {
-        authorization: `token ${repoToken}`,
+        authorization: `token ${token}`,
       },
     });
     console.log(checkComments);
