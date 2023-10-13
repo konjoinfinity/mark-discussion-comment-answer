@@ -26,7 +26,7 @@ export async function markDiscussionCommentAnswer() {
   try {
     const checkComments: any = await graphql({
       query: `query {
-      repository(owner: ${repoOwner}, name: ${repoName} ) {
+      repository(owner: "${repoOwner}", name: "${repoName}" ) {
         discussions(first: 1, answered: false) {
           edges {
             node {
