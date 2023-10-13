@@ -18,6 +18,59 @@ export async function markDiscussionCommentAnswer() {
   console.log(eventPayload);
   const commentId = eventPayload.comment.node_id;
   console.log(commentId);
+  const repoName = eventPayload.repository.name;
+  console.log(repoName);
+  const repoOwner = eventPayload.repository.owner.login;
+  console.log(repoOwner);
+
+  try {
+    const checkComments: any = await graphql({
+      query: `query {
+      repository(owner: ${repoOwner}, name: ${repoName} ) {
+        discussions(first: 1, answered: false) {
+          edges {
+            node {
+              isAnswered
+              id
+              title
+              body
+              locked
+              number
+              publishedAt
+              repository {
+                name
+              }
+              comments(first: 5) {
+                edges {
+                  node {
+                    id
+                    upvoteCount
+                    body
+                    createdAt
+                    reactionGroups {
+                      reactors {
+                        totalCount
+                      }
+                      content
+                      createdAt
+                      viewerHasReacted
+                    }
+                  }
+                }
+              }
+            }
+          }
+          nodes {
+            id
+          }
+        }
+      }
+    }`,
+    });
+    console.log(checkComments);
+  } catch (err) {
+    console.log(err);
+  }
 
   if (!eventPayload.discussion.category.is_answerable) {
     console.log("Not answerable");

@@ -8,6 +8,12 @@
       "category": {
         "is_answerable": true
       }
+    },
+    "repository": {
+      "name": "mark-discussion-comment-answer",
+      "owner": {
+        "login": "konjoinfinity"
+      }
     }
   }
   
