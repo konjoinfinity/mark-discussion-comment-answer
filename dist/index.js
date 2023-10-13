@@ -83,6 +83,9 @@ function markDiscussionCommentAnswer() {
                 },
             });
             console.log(checkComments);
+            console.log("==========================================");
+            console.log(checkComments.repository.discussions.nodes);
+            console.log("==========================================");
         }
         catch (err) {
             console.log(err);
