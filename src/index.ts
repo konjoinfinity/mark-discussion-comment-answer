@@ -92,7 +92,7 @@ export async function markDiscussionCommentAnswer() {
     console.log(checkCommentsString);
     console.log("==========================================");
     console.log("==========================================");
-    console.log(checkComments.repository.discussions.nodes);
+    console.log(checkComments.repository.discussions.edges[0]?.node?.comments?.edges);
     console.log("==========================================");
     console.log("==========================================");
     console.log(checkComments.repository.discussions.edges);
