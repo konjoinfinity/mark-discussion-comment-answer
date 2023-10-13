@@ -99,6 +99,9 @@ function markDiscussionCommentAnswer() {
             console.log(checkCommentsString);
             console.log("==========================================");
             console.log("==========================================");
+            console.log(checkComments.repository.discussions.edges.node.comments.edges.node);
+            console.log("==========================================");
+            console.log("==========================================");
             console.log(checkComments.repository.discussions.edges);
             console.log("==========================================");
         }
