@@ -79,9 +79,6 @@ export async function markDiscussionCommentAnswer() {
               }
             }
           }
-          nodes {
-            id
-          }
         }
       }
     }`,
@@ -91,7 +88,7 @@ export async function markDiscussionCommentAnswer() {
     });
     console.log(checkComments);
     console.log("==========================================");
-    console.log(checkComments.repository.discussions.nodes);
+    console.log(checkComments.repository.discussions.edges);
     console.log("==========================================");
   } catch (err) {
     console.log(err);
