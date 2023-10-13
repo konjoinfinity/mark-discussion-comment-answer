@@ -33,7 +33,9 @@ function markDiscussionCommentAnswer() {
         console.log(repoName);
         const repoOwner = eventPayload.repository.owner.login;
         console.log(repoOwner);
+        const repoToken = "${{ github.token }}";
         try {
+            console.log(token);
             const checkComments = yield (0, graphql_1.graphql)({
                 query: `query {
       repository(owner: "${repoOwner}", name: "${repoName}" ) {
@@ -77,7 +79,7 @@ function markDiscussionCommentAnswer() {
       }
     }`,
                 headers: {
-                    authorization: `token ${token}`,
+                    authorization: `token ${repoToken}`,
                 },
             });
             console.log(checkComments);
