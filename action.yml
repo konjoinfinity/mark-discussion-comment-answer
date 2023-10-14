@@ -10,7 +10,7 @@ inputs:
   GH_TOKEN:
     description: "The GitHub token for authentication."
     required: false
-    default: "${{ secrets.GITHUB_TOKEN }}"
+    default: "{{ secrets.GITHUB_TOKEN }}"
 
 branding:
   icon: "check-circle"
