@@ -114,16 +114,16 @@ export async function markDiscussionCommentAnswer() {
       },
     });
     const result = await countPositiveReactions(checkComments);
+    if (result && Number(result.totalReactions) >= Number(reactionThreshold)) {
+      setFailed("Comment reaction threshold has not been met to be considered an answer.");
+      return;
+    }
     commentNodeId = result.commentId;
     await setOutput("commentText", result.commentText);
     await setOutput("reactionThreshold", reactionThreshold);
     await setOutput("totalReactions", result.totalReactions);
     console.log(result.totalReactions);
     await setOutput("commentId", result.commentId);
-    if (Number(result.totalReactions) >= Number(reactionThreshold)) {
-      setFailed("Comment reaction threshold has not been met to be considered an answer.");
-      return;
-    }
   } catch (err) {
     console.log(err);
   }
