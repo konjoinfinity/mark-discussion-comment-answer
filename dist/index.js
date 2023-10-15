@@ -119,8 +119,9 @@ function markDiscussionCommentAnswer() {
             yield (0, core_1.setOutput)("commentText", result.commentText);
             yield (0, core_1.setOutput)("reactionThreshold", reactionThreshold);
             yield (0, core_1.setOutput)("totalReactions", result.totalReactions);
+            console.log(result.totalReactions);
             yield (0, core_1.setOutput)("commentId", result.commentId);
-            if (result.totalReactions > reactionThreshold) {
+            if (Number(result.totalReactions) >= Number(reactionThreshold)) {
                 (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
                 return;
             }
