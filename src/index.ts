@@ -118,8 +118,9 @@ export async function markDiscussionCommentAnswer() {
     await setOutput("commentText", result.commentText);
     await setOutput("reactionThreshold", reactionThreshold);
     await setOutput("totalReactions", result.totalReactions);
+    console.log(result.totalReactions);
     await setOutput("commentId", result.commentId);
-    if (result.totalReactions > reactionThreshold) {
+    if (Number(result.totalReactions) >= Number(reactionThreshold)) {
       setFailed("Comment reaction threshold has not been met to be considered an answer.");
       return;
     }
