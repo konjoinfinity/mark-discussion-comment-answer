@@ -10,6 +10,11 @@ interface Res {
   };
 }
 
+export type Hey = {
+  a: string;
+  b: object;
+};
+
 export async function markDiscussionCommentAnswer() {
   const token = getInput("GH_TOKEN");
   console.log(`TOKEN = ${token}`);

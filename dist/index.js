@@ -57,7 +57,8 @@ function markDiscussionCommentAnswer() {
             let commentIdWithMaxReactions = "";
             for (const comment of comments) {
                 const reactions = comment.node.reactionGroups;
-                let totalPositiveReactions = 0; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                /* eslint-disable @typescript-eslint/no-unused-vars */
+                let totalPositiveReactions = 0;
                 let totalReactions = 0;
                 for (const reaction of reactions) {
                     totalReactions += reaction.reactors.totalCount;
