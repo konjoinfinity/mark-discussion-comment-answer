@@ -41,37 +41,40 @@ export async function markDiscussionCommentAnswer() {
     return;
   }
 
-  function countPositiveReactions(data: any) {
-    const comments = data.repository.discussions.edges[0].node.comments.edges;
-    const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
+function countPositiveReactions(data) {
+  const comments = data.repository.discussions.edges[0].node.comments.edges;
+  const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
 
-    let maxTotalReactions = 0;
-    let commentWithMaxReactions = "";
+  let maxTotalReactions = 0;
+  let commentWithMaxReactions = "";
+  let commentIdWithMaxReactions = "";
 
-    for (const comment of comments) {
-      const reactions = comment.node.reactionGroups;
-      /* eslint-disable @typescript-eslint/no-unused-vars */
-      let totalPositiveReactions = 0;
-      let totalReactions = 0;
+  for (const comment of comments) {
+    const reactions = comment.node.reactionGroups;
 
-      for (const reaction of reactions) {
-        totalReactions += reaction.reactors.totalCount;
-        if (positiveReactions.includes(reaction.content)) {
-          totalPositiveReactions += reaction.reactors.totalCount;
-        }
-      }
+    let totalPositiveReactions = 0;
+    let totalReactions = 0;
 
-      if (totalReactions > maxTotalReactions) {
-        maxTotalReactions = totalReactions;
-        commentWithMaxReactions = comment.node.body;
+    for (const reaction of reactions) {
+      totalReactions += reaction.reactors.totalCount;
+      if (positiveReactions.includes(reaction.content)) {
+        totalPositiveReactions += reaction.reactors.totalCount;
       }
     }
 
-    return {
-      comment: commentWithMaxReactions,
-      totalReactions: maxTotalReactions,
-    };
+    if (totalReactions > maxTotalReactions) {
+      maxTotalReactions = totalReactions;
+      commentWithMaxReactions = comment.node.body;
+      commentIdWithMaxReactions = comment.node.id;
+    }
   }
+
+  return {
+    commentId: commentIdWithMaxReactions,
+    commentText: commentWithMaxReactions,
+    totalReactions: maxTotalReactions,
+  };
+}
 
   try {
     console.log(token);
@@ -130,9 +133,13 @@ export async function markDiscussionCommentAnswer() {
     console.log(checkComments.repository.discussions.edges);
     console.log("==========================================");
 
-    const result = countPositiveReactions(checkComments);
-    console.log("Comment:", result.comment);
-    console.log("Total Reactions:", result.totalReactions);
+const result = countPositiveReactions(checkComments);
+console.log("Comment:", result.commentText);
+console.log("Total Reactions:", result.totalReactions);
+console.log("Comment ID:", result.commentId);
+const commentNodeId = result.commentId;
+
+
   } catch (err) {
     console.log(err);
   }
@@ -141,7 +148,7 @@ export async function markDiscussionCommentAnswer() {
     const response: Res = await graphql({
       query: `mutation {
       markDiscussionCommentAsAnswer(
-        input: { id: "${commentId}", clientMutationId: "1234" }
+        input: { id: "${commentNodeId}", clientMutationId: "1234" }
       ) {
         clientMutationId
         discussion {
