@@ -10,11 +10,6 @@ interface Res {
   };
 }
 
-export type Hey = {
-  a: string;
-  b: object;
-};
-
 export async function markDiscussionCommentAnswer() {
   const token = getInput("GH_TOKEN");
   console.log(`TOKEN = ${token}`);
@@ -60,6 +55,7 @@ export async function markDiscussionCommentAnswer() {
       /* eslint-disable @typescript-eslint/no-unused-vars */
       let totalPositiveReactions = 0;
       let totalReactions = 0;
+      /* eslint-disable @typescript-eslint/no-unused-vars */
 
       for (const reaction of reactions) {
         totalReactions += reaction.reactors.totalCount;

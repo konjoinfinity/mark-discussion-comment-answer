@@ -33,7 +33,7 @@ function markDiscussionCommentAnswer() {
         console.log(repoName);
         const repoOwner = eventPayload.repository.owner.login;
         console.log(repoOwner);
-        let commentNodeId = '';
+        let commentNodeId = "";
         if (!eventPayload.discussion.category.is_answerable) {
             console.log("Not answerable");
             (0, core_1.setFailed)("Discussion category is not answerable.");
