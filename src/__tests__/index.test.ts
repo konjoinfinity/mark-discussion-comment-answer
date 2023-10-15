@@ -39,7 +39,7 @@ test("Test if github token is invalid", async () => {
 
   await markDiscussionCommentAnswer();
 
-  await expect(mockedGetInput).toHaveBeenCalledTimes(1);
+  await expect(mockedGetInput).toHaveBeenCalledTimes(2);
   await expect(mockedSetFailed).toHaveBeenCalledWith("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
 });
 
@@ -57,7 +57,7 @@ test("run function successfully runs", async () => {
 
   await markDiscussionCommentAnswer();
 
-  await expect(mockedGetInput).toHaveBeenCalledTimes(1);
+  await expect(mockedGetInput).toHaveBeenCalledTimes(2);
 });
 
 test("Test if discussion is already answered", async () => {
@@ -66,7 +66,7 @@ test("Test if discussion is already answered", async () => {
 
   await markDiscussionCommentAnswer();
 
-  await expect(mockedGetInput).toHaveBeenCalledTimes(1);
+  await expect(mockedGetInput).toHaveBeenCalledTimes(2);
   await expect(mockedSetFailed).toHaveBeenCalledWith("Discussion is already answered.");
 });
 
@@ -76,6 +76,6 @@ test("Test if discussion is unanswerable", async () => {
 
   await markDiscussionCommentAnswer();
 
-  await expect(mockedGetInput).toHaveBeenCalledTimes(1);
+  await expect(mockedGetInput).toHaveBeenCalledTimes(2);
   await expect(mockedSetFailed).toHaveBeenCalledWith("Discussion category is not answerable.");
 });

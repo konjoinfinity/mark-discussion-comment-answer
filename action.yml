@@ -11,6 +11,10 @@ inputs:
     description: "The GitHub token for authentication."
     required: false
     default: "{{ secrets.GITHUB_TOKEN }}"
+  reaction_threshold:
+    description: Number of positive comment reactions required to mark as an answer.
+    required: false
+    default: 0
 
 branding:
   icon: "check-circle"

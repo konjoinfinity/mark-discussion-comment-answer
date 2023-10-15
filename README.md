@@ -9,7 +9,7 @@ Mark a discussion comment as the answer
 
 ## About
 
-This GitHub action marks discussion comments as the answer.
+This GitHub action automatically marks discussion comments with the highest number of reactions as the answer.
 
 
 ## Usage
@@ -22,7 +22,9 @@ In your workflow, to use this github action add a step like this to your workflo
         id: markanswer
         uses: konjoinfinity/mark-discussion-comment-answer@v1.0.x
         with:
-          GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}"    
+          GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}" # PAT required for private repos
+          reaction_threshold: 3 # Number of reactions required to mark a comment as the answer   
+          
 ```     
 
 ##### Example Output
@@ -51,7 +53,7 @@ No extra configuration required to run this GitHub Action.
 | Name | Type | Description | Requried? | Default |
 | --- | --- | --- | --- | --- |
 | `GH_TOKEN` | String | A GitHub PAT is required, but the default is sufficient for public repos. For private repos, ensure you create a PAT that has discussion: write and repo: write, then store it as an action secret for usage within the workflow. See more details about tokens here - [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).  | **No** | `"${{ secrets.GITHUB_TOKEN }}"` | 
-| `reaction_threshold` | Number  | Number of positive comment reactions required to mark as an answer. (Ex. `3`, `10`) | **No** | `0` |
+| `reaction_threshold` | Number  | Number of positive comment reactions required to mark as an answer. (Ex. `3`, `10`) Positive emoji reactions are: `["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"]` | **No** | `0` |
 
 
 
@@ -60,7 +62,12 @@ No extra configuration required to run this GitHub Action.
 
 | Name | Description | How To Access |
 | --- | --- | --- |
-| `discussionId` | Discussion ID where the marked as answered comment resides. | `${{ steps.<your-step>.outputs.discussionId}}` |
+| `discussionId` | Discussion ID where the marked as answered comment resides. | `${{ steps.<your-step>.outputs.discussionId }}` |
+| `clientMutationId` | GraphQL Mutation ID for the client. | `${{ steps.<your-step>.outputs.clientMutationId }}` |
+| `commentText` | Body of the comment with the highest number of positive reactions/emojis. | `${{ steps.<your-step>.outputs.commentText }}` |
+| `reactionThreshold` | Number of positive reactions/emojis required to mark a comment as the answer. | `${{ steps.<your-step>.outputs.reactionThreshold }}` |
+| `totalReactions` | Total number of reactions for the comment with the highest number of positive reactions/emojis. | `${{ steps.<your-step>.outputs.totalReactions }}` |
+| `commentId` | Comment ID for the comment with the highest number of positive reactions/emojis. | `${{ steps.<your-step>.outputs.commentId }}` |
 
 
 
@@ -71,6 +78,11 @@ No extra configuration required to run this GitHub Action.
 - name: Show Output
   run: |
     echo ${{ steps.<your-step>.outputs.discussionId }}
+    echo ${{ steps.<your-step>.outputs.clientMutationId }}
+    echo ${{ steps.<your-step>.outputs.commentText }}
+    echo ${{ steps.<your-step>.outputs.reactionThreshold }}
+    echo ${{ steps.<your-step>.outputs.totalReactions }}
+    echo ${{ steps.<your-step>.outputs.commentId }}
 ```
 
 
@@ -97,13 +109,19 @@ jobs:
         
       - name: Run Mark Discussion Comment Answer
         id: markanswer
-        uses: konjoinfinity/mark-discussion-comment-answer@v1.0.9
+        uses: konjoinfinity/mark-discussion-comment-answer@v1.0.x
         with:
           GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}" # PAT required for private repos
+          reaction_threshold: 3 # Number of reactions required to mark a comment as the answer
           
       - name: Show Mark Answer Output
         run: |
           echo "discussionId = ${{ steps.markanswer.outputs.discussionId }}"
+          echo ${{ steps.<your-step>.outputs.clientMutationId }}
+          echo ${{ steps.<your-step>.outputs.commentText }}
+          echo ${{ steps.<your-step>.outputs.reactionThreshold }}
+          echo ${{ steps.<your-step>.outputs.totalReactions }}
+          echo ${{ steps.<your-step>.outputs.commentId }}
 ```
 
 ##### Example Output

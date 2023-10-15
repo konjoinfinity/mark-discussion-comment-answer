@@ -60,6 +60,7 @@ function markDiscussionCommentAnswer() {
                 /* eslint-disable @typescript-eslint/no-unused-vars */
                 let totalPositiveReactions = 0;
                 let totalReactions = 0;
+                /* eslint-disable @typescript-eslint/no-unused-vars */
                 for (const reaction of reactions) {
                     totalReactions += reaction.reactors.totalCount;
                     if (positiveReactions.includes(reaction.content)) {

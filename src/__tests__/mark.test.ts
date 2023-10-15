@@ -53,7 +53,7 @@ test("should call run() when JEST_WORKER_ID is not defined", async () => {
   await markDiscussionCommentAnswer();
 
   // Assertions
-  expect(mockedGetInput).toHaveBeenCalledTimes(1);
+  expect(mockedGetInput).toHaveBeenCalledTimes(2);
   // expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "commentId");
   // expect(mockedSetOutput).toHaveBeenCalledWith("discussion", "discussionId");
 });
