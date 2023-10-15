@@ -33,6 +33,7 @@ function markDiscussionCommentAnswer() {
         console.log(repoName);
         const repoOwner = eventPayload.repository.owner.login;
         console.log(repoOwner);
+        let commentNodeId = '';
         if (!eventPayload.discussion.category.is_answerable) {
             console.log("Not answerable");
             (0, core_1.setFailed)("Discussion category is not answerable.");
@@ -53,9 +54,10 @@ function markDiscussionCommentAnswer() {
             const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
             let maxTotalReactions = 0;
             let commentWithMaxReactions = "";
+            let commentIdWithMaxReactions = "";
             for (const comment of comments) {
                 const reactions = comment.node.reactionGroups;
-                let totalPositiveReactions = 0;
+                let totalPositiveReactions = 0; // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 let totalReactions = 0;
                 for (const reaction of reactions) {
                     totalReactions += reaction.reactors.totalCount;
@@ -66,10 +68,12 @@ function markDiscussionCommentAnswer() {
                 if (totalReactions > maxTotalReactions) {
                     maxTotalReactions = totalReactions;
                     commentWithMaxReactions = comment.node.body;
+                    commentIdWithMaxReactions = comment.node.id;
                 }
             }
             return {
-                comment: commentWithMaxReactions,
+                commentId: commentIdWithMaxReactions,
+                commentText: commentWithMaxReactions,
                 totalReactions: maxTotalReactions,
             };
         }
@@ -130,8 +134,10 @@ function markDiscussionCommentAnswer() {
             console.log(checkComments.repository.discussions.edges);
             console.log("==========================================");
             const result = countPositiveReactions(checkComments);
-            console.log("Comment:", result.comment);
+            console.log("Comment:", result.commentText);
             console.log("Total Reactions:", result.totalReactions);
+            console.log("Comment ID:", result.commentId);
+            commentNodeId = result.commentId;
         }
         catch (err) {
             console.log(err);
@@ -140,7 +146,7 @@ function markDiscussionCommentAnswer() {
             const response = yield (0, graphql_1.graphql)({
                 query: `mutation {
       markDiscussionCommentAsAnswer(
-        input: { id: "${commentId}", clientMutationId: "1234" }
+        input: { id: "${commentNodeId}", clientMutationId: "1234" }
       ) {
         clientMutationId
         discussion {
