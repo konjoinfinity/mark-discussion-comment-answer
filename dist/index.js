@@ -20,32 +20,23 @@ exports.markDiscussionCommentAnswer = void 0;
 const core_1 = __nccwpck_require__(2186);
 const graphql_1 = __nccwpck_require__(8467);
 function markDiscussionCommentAnswer() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const token = (0, core_1.getInput)("GH_TOKEN");
-        console.log(`TOKEN = ${token}`);
+        const reactionThreshold = Number((0, core_1.getInput)("reaction_threshold"));
         const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
-        console.log(eventPayload.discussion);
-        console.log(eventPayload);
-        const commentId = eventPayload.comment.node_id;
-        console.log(commentId);
         const repoName = eventPayload.repository.name;
-        console.log(repoName);
         const repoOwner = eventPayload.repository.owner.login;
-        console.log(repoOwner);
         let commentNodeId = "";
         if (!eventPayload.discussion.category.is_answerable) {
-            console.log("Not answerable");
             (0, core_1.setFailed)("Discussion category is not answerable.");
             return;
         }
         if (eventPayload.discussion.answer_chosen_at) {
-            console.log("Already answered");
             (0, core_1.setFailed)("Discussion is already answered.");
             return;
         }
         if (token === "{{ INVALID_TOKEN }}") {
-            console.log("Invalid Github Token");
             (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
             return;
         }
@@ -80,7 +71,6 @@ function markDiscussionCommentAnswer() {
             };
         }
         try {
-            console.log(token);
             const checkComments = yield (0, graphql_1.graphql)({
                 query: `query {
       repository(owner: "${repoOwner}", name: "${repoName}" ) {
@@ -124,22 +114,16 @@ function markDiscussionCommentAnswer() {
                     authorization: `token ${token}`,
                 },
             });
-            console.log(checkComments);
-            console.log("==========================================");
-            const checkCommentsString = JSON.stringify(checkComments);
-            console.log(checkCommentsString);
-            console.log("==========================================");
-            console.log("==========================================");
-            console.log((_c = (_b = (_a = checkComments.repository.discussions.edges[0]) === null || _a === void 0 ? void 0 : _a.node) === null || _b === void 0 ? void 0 : _b.comments) === null || _c === void 0 ? void 0 : _c.edges);
-            console.log("==========================================");
-            console.log("==========================================");
-            console.log(checkComments.repository.discussions.edges);
-            console.log("==========================================");
-            const result = countPositiveReactions(checkComments);
-            console.log("Comment:", result.commentText);
-            console.log("Total Reactions:", result.totalReactions);
-            console.log("Comment ID:", result.commentId);
+            const result = yield countPositiveReactions(checkComments);
+            if (result.totalReactions >= reactionThreshold) {
+                (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
+                return;
+            }
             commentNodeId = result.commentId;
+            yield (0, core_1.setOutput)("commentText", result.commentText);
+            yield (0, core_1.setOutput)("reactionThreshold", reactionThreshold);
+            yield (0, core_1.setOutput)("totalReactions", result.totalReactions);
+            yield (0, core_1.setOutput)("commentId", result.commentId);
         }
         catch (err) {
             console.log(err);
@@ -160,9 +144,8 @@ function markDiscussionCommentAnswer() {
                     authorization: `token ${token}`,
                 },
             });
-            console.log(response);
-            yield (0, core_1.setOutput)("discussionId", (_d = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _d === void 0 ? void 0 : _d.discussion);
-            yield (0, core_1.setOutput)("clientMutationId", (_e = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _e === void 0 ? void 0 : _e.clientMutationId);
+            yield (0, core_1.setOutput)("discussionId", (_a = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _a === void 0 ? void 0 : _a.discussion);
+            yield (0, core_1.setOutput)("clientMutationId", (_b = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _b === void 0 ? void 0 : _b.clientMutationId);
         }
         catch (error) {
             yield (0, core_1.setFailed)(error.message);
