@@ -41,6 +41,38 @@ export async function markDiscussionCommentAnswer() {
     return;
   }
 
+  function countPositiveReactions(data: any) {
+    const comments = data.repository.discussions.edges[0].node.comments.edges;
+    const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
+
+    let maxTotalReactions = 0;
+    let commentWithMaxReactions = "";
+
+    for (const comment of comments) {
+      const reactions = comment.node.reactionGroups;
+      /* eslint-disable @typescript-eslint/no-unused-vars */
+      let totalPositiveReactions = 0;
+      let totalReactions = 0;
+
+      for (const reaction of reactions) {
+        totalReactions += reaction.reactors.totalCount;
+        if (positiveReactions.includes(reaction.content)) {
+          totalPositiveReactions += reaction.reactors.totalCount;
+        }
+      }
+
+      if (totalReactions > maxTotalReactions) {
+        maxTotalReactions = totalReactions;
+        commentWithMaxReactions = comment.node.body;
+      }
+    }
+
+    return {
+      comment: commentWithMaxReactions,
+      totalReactions: maxTotalReactions,
+    };
+  }
+
   try {
     console.log(token);
     const checkComments: any = await graphql({
@@ -59,7 +91,7 @@ export async function markDiscussionCommentAnswer() {
               repository {
                 name
               }
-              comments(first: 5) {
+              comments(first: 10) {
                 edges {
                   node {
                     id
@@ -97,6 +129,10 @@ export async function markDiscussionCommentAnswer() {
     console.log("==========================================");
     console.log(checkComments.repository.discussions.edges);
     console.log("==========================================");
+
+    const result = countPositiveReactions(checkComments);
+    console.log("Comment:", result.comment);
+    console.log("Total Reactions:", result.totalReactions);
   } catch (err) {
     console.log(err);
   }

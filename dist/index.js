@@ -48,6 +48,31 @@ function markDiscussionCommentAnswer() {
             (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
             return;
         }
+        function countPositiveReactions(data) {
+            const comments = data.repository.discussions.edges[0].node.comments.edges;
+            const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
+            let maxTotalReactions = 0;
+            let commentWithMaxReactions = "";
+            for (const comment of comments) {
+                const reactions = comment.node.reactionGroups;
+                let totalPositiveReactions = 0;
+                let totalReactions = 0;
+                for (const reaction of reactions) {
+                    totalReactions += reaction.reactors.totalCount;
+                    if (positiveReactions.includes(reaction.content)) {
+                        totalPositiveReactions += reaction.reactors.totalCount;
+                    }
+                }
+                if (totalReactions > maxTotalReactions) {
+                    maxTotalReactions = totalReactions;
+                    commentWithMaxReactions = comment.node.body;
+                }
+            }
+            return {
+                comment: commentWithMaxReactions,
+                totalReactions: maxTotalReactions,
+            };
+        }
         try {
             console.log(token);
             const checkComments = yield (0, graphql_1.graphql)({
@@ -66,7 +91,7 @@ function markDiscussionCommentAnswer() {
               repository {
                 name
               }
-              comments(first: 5) {
+              comments(first: 10) {
                 edges {
                   node {
                     id
@@ -104,6 +129,9 @@ function markDiscussionCommentAnswer() {
             console.log("==========================================");
             console.log(checkComments.repository.discussions.edges);
             console.log("==========================================");
+            const result = countPositiveReactions(checkComments);
+            console.log("Comment:", result.comment);
+            console.log("Total Reactions:", result.totalReactions);
         }
         catch (err) {
             console.log(err);
