@@ -7,7 +7,6 @@ on:
 jobs:
   mark-comment-answer:
     name: Mark a discussion comment as the answer
-    if: ${{ toJSON(github.event.locked) == null }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
