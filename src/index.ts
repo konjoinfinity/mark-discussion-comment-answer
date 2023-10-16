@@ -114,7 +114,7 @@ export async function markDiscussionCommentAnswer() {
       },
     });
     const result = await countPositiveReactions(checkComments);
-    if (result && Number(result.totalReactions) >= Number(reactionThreshold)) {
+    if (result && Number(result.totalReactions) <= Number(reactionThreshold)) {
       setFailed("Comment reaction threshold has not been met to be considered an answer.");
       return;
     }
