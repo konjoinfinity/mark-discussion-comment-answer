@@ -24,6 +24,7 @@ function markDiscussionCommentAnswer() {
     return __awaiter(this, void 0, void 0, function* () {
         const token = (0, core_1.getInput)("GH_TOKEN");
         const reactionThreshold = Number((0, core_1.getInput)("reaction_threshold"));
+        const commentThreshold = (0, core_1.getInput)("comment_threshold");
         const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
         const repoName = eventPayload.repository.name;
         const repoOwner = eventPayload.repository.owner.login;
@@ -38,6 +39,10 @@ function markDiscussionCommentAnswer() {
         }
         if (token === "{{ INVALID_TOKEN }}") {
             (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+            return;
+        }
+        if (Number(eventPayload.discussion.comments) <= Number(commentThreshold)) {
+            (0, core_1.setFailed)("Discussion does not have enough comments for an answer to be chosen.");
             return;
         }
         function countPositiveReactions(data) {
