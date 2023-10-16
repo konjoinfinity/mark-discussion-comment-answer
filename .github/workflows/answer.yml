@@ -3,6 +3,11 @@ name: Mark Discussion Comment Answer
 on:
   discussion_comment:
     types: [created]
+    if: >- 
+    ${{ github.event.discussion_comment.state == 'open' }} && 
+    ${{ github.event.discussion_comment.discussion.category.is_answerable == true }} &&
+    ${{ github.event.discussion_comment.discussion.answer_chosen_at == null }} && 
+    ${{ github.event.discussion_comment.locked == false }}
 
 jobs:
   mark-comment-answer:
@@ -18,6 +23,7 @@ jobs:
         with:
           GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}"
           reaction_threshold: 3
+          comment_threshold: 3
           
       - name: Show Mark Answer Output
         run: |

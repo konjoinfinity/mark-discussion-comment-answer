@@ -14,8 +14,11 @@ inputs:
   reaction_threshold:
     description: Number of positive comment reactions required to mark as an answer.
     required: false
-    default: 0
-
+    default: 3
+  comment_threshold:
+    description: Number of total comments required to mark as an answer.
+    required: false
+    default: 3
 branding:
   icon: "check-circle"
   color: "green"

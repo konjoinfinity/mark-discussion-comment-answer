@@ -36,9 +36,9 @@ test("should call run() when JEST_WORKER_ID is not defined", async () => {
   // Mock process.env to simulate JEST_WORKER_ID not being defined
   delete process.env.JEST_WORKER_ID;
 
-  mockedGetInput.mockReturnValueOnce("{{ secrets.GITHUB_TOKEN }}");
-  mockedGetInput.mockReturnValueOnce("commentId");
-  mockedGetInput.mockReturnValueOnce("discussion");
+  await mockedGetInput.mockReturnValueOnce("{{ secrets.GITHUB_TOKEN }}");
+  await mockedGetInput.mockReturnValueOnce("3");
+  await mockedGetInput.mockReturnValueOnce("3");
 
   // Mock the GraphQL response
   const mockedResponse = {
@@ -53,7 +53,7 @@ test("should call run() when JEST_WORKER_ID is not defined", async () => {
   await markDiscussionCommentAnswer();
 
   // Assertions
-  expect(mockedGetInput).toHaveBeenCalledTimes(2);
+  expect(mockedGetInput).toHaveBeenCalledTimes(3);
   // expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "commentId");
   // expect(mockedSetOutput).toHaveBeenCalledWith("discussion", "discussionId");
 });

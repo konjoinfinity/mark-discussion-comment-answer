@@ -13,6 +13,7 @@ interface Res {
 export async function markDiscussionCommentAnswer() {
   const token = getInput("GH_TOKEN");
   const reactionThreshold = Number(getInput("reaction_threshold"));
+  const commentThreshold = getInput("comment_threshold");
   const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
   const repoName = eventPayload.repository.name;
   const repoOwner = eventPayload.repository.owner.login;
@@ -30,6 +31,11 @@ export async function markDiscussionCommentAnswer() {
 
   if (token === "{{ INVALID_TOKEN }}") {
     setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+    return;
+  }
+
+  if (Number(eventPayload.discussion.comments) <= Number(commentThreshold)) {
+    setFailed("Discussion does not have enough comments for an answer to be chosen.");
     return;
   }
 
