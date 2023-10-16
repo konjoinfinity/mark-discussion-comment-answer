@@ -5,32 +5,12 @@ on:
     types: [created]
 
 jobs:
-  validation:
-    name: validation-checks
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump GitHub context
-        env:
-          ANSWERABLE: ${{ toJSON(github.event.discussion.category.is_answerable) }}
-          COMMENTS: ${{ toJSON(github.event.discussion.comments) }}
-          ANSWER: ${{ toJSON(github.event.discussion.answer_chosen_at) }}
-          LOCKED: ${{ toJSON(github.event.locked) }}
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: |
-          echo "$ANSWERABLE"
-          echo "$COMMENTS"
-          echo "$ANSWER"
-          echo "$LOCKED"
-          echo "$GITHUB_CONTEXT"
-          
-        
-      - name: Discussion Validation
-        if: ${{ github.event.discussion_comment.state != 'open' }}
-        run: echo 'Validation failed - Discussion is closed.'
-  
   mark-comment-answer:
     name: Mark a discussion comment as the answer
-    needs: validation
+    if: |
+      ${{ toJSON(github.event.discussion.category.is_answerable) == true }} &&
+      ${{ toJSON(github.event.discussion.answer_chosen_at) == null }} &&
+      ${{ toJSON(github.event.locked) == null }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
