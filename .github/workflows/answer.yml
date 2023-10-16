@@ -9,6 +9,21 @@ jobs:
     name: Mark a discussion comment as the answer
     runs-on: ubuntu-latest
     steps:
+      - name: Dump GitHub context
+        env:
+          ANSWERABLE: ${{ toJSON(github.event.discussion.category.is_answerable) }}
+          COMMENTS: ${{ toJSON(github.event.discussion.comments) }}
+          ANSWER: ${{ toJSON(github.event.discussion.answer_chosen_at) }}
+          LOCKED: ${{ toJSON(github.event.locked) }}
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: |
+          echo "$ANSWERABLE"
+          echo {{ $ANSWERABLE == true }}
+          echo "$COMMENTS"
+          echo {{ $ANSWER == null }}
+          echo {{ $LOCKED == null }}
+          echo "$GITHUB_CONTEXT"
+  
       - name: Checkout Repo
         uses: actions/checkout@v3
         
