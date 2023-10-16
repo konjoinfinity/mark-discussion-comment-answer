@@ -5,18 +5,17 @@ on:
     types: [created]
 
 jobs:
-  validation:
-    runs-on: ubuntu-latest
-    if: >-
-      github.event.discussion_comment.state != 'open'
-    steps:
-      - run: echo 'Validation Failed!'
-      
-  
   mark-comment-answer:
     name: Mark a discussion comment as the answer
     runs-on: ubuntu-latest
     steps:
+      - name: State test
+        run: echo github.event.discussion_comment.state
+        
+      - name: Discussion Validation
+        if: ${{ github.event.discussion_comment.state != 'open' }}
+        run: echo 'Validation failed - Discussion is closed.'
+        
       - name: Checkout Repo
         uses: actions/checkout@v3
         
