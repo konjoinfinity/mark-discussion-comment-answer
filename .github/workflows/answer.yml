@@ -17,6 +17,7 @@ jobs:
         uses: ./
         with:
           GH_TOKEN: "${{ secrets.DISCUSS_TOKEN }}"
+          reaction_threshold: 3
           
       - name: Show Mark Answer Output
         run: |
