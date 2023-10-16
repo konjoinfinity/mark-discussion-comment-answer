@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: State test
-        run: echo ${{ toJson(github) }}
+        run: |
+          cat << OBJECT
+          ${{ toJson(github) }}
+          OBJECT
         
       - name: Discussion Validation
         if: ${{ github.event.discussion_comment.state != 'open' }}
