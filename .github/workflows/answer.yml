@@ -11,13 +11,18 @@ jobs:
     steps:
       - name: Dump GitHub context
         env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-          DISCUSS: ${{ toJSON(github.event.discussion) }}
+          ANSWERABLE: ${{ toJSON(github.event.discussion.category.is_answerable) }}
           COMMENTS: ${{ toJSON(github.event.discussion.comments) }}
+          ANSWER: ${{ toJSON(github.event.discussion.answer_chosen_at) }}
+          LOCKED: ${{ toJSON(github.event.locked) }}
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
-          echo "$GITHUB_CONTEXT"
-          echo "$DISCUSS"
+          echo "$ANSWERABLE"
           echo "$COMMENTS"
+          echo "$ANSWER"
+          echo "$LOCKED"
+          echo "$GITHUB_CONTEXT"
+          
         
       - name: Discussion Validation
         if: ${{ github.event.discussion_comment.state != 'open' }}
