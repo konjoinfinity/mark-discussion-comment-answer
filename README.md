@@ -117,11 +117,11 @@ jobs:
       - name: Show Mark Answer Output
         run: |
           echo "discussionId = ${{ steps.markanswer.outputs.discussionId }}"
-          echo ${{ steps.<your-step>.outputs.clientMutationId }}
-          echo ${{ steps.<your-step>.outputs.commentText }}
-          echo ${{ steps.<your-step>.outputs.reactionThreshold }}
-          echo ${{ steps.<your-step>.outputs.totalReactions }}
-          echo ${{ steps.<your-step>.outputs.commentId }}
+          echo "clientMutationId = ${{ steps.markanswer.outputs.clientMutationId }}"
+          echo "commentText = ${{ steps.markanswer.outputs.commentText }}"
+          echo "reactionThreshold = ${{ steps.markanswer.outputs.reactionThreshold }}"
+          echo "totalReactions = ${{ steps.markanswer.outputs.totalReactions }}"
+          echo "commentId = ${{ steps.markanswer.outputs.commentId }}"
 ```
 
 ##### Example Output

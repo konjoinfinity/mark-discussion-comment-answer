@@ -22,3 +22,8 @@ jobs:
       - name: Show Mark Answer Output
         run: |
           echo "discussionId = ${{ steps.markanswer.outputs.discussionId }}"
+          echo "clientMutationId = ${{ steps.markanswer.outputs.clientMutationId }}"
+          echo "commentText = ${{ steps.markanswer.outputs.commentText }}"
+          echo "reactionThreshold = ${{ steps.markanswer.outputs.reactionThreshold }}"
+          echo "totalReactions = ${{ steps.markanswer.outputs.totalReactions }}"
+          echo "commentId = ${{ steps.markanswer.outputs.commentId }}"
