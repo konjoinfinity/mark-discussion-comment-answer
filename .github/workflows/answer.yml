@@ -9,7 +9,8 @@ jobs:
     name: Mark a discussion comment as the answer
     if: |
       toJSON(github.event.locked) == null && 
-      toJSON(github.event.discussion.category.is_answerable) == true
+      toJSON(github.event.discussion.category.is_answerable) == true &&
+      toJSON(github.event.discussion.answer_chosen_at) == null
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
