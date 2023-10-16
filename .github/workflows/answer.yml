@@ -8,12 +8,10 @@ jobs:
   validation:
     runs-on: ubuntu-latest
     if: >-
-      github.event.discussion_comment.state == 'open' &&
-      github.event.discussion_comment.discussion.category.is_answerable == true &&
-      github.event.discussion_comment.discussion.answer_chosen_at == null && 
-      github.event.discussion_comment.locked == false
+      github.event.discussion_comment.state != 'open'
     steps:
-      - run: echo 'Validation Passed!'
+      - run: echo 'Validation Failed!'
+      
   
   mark-comment-answer:
     name: Mark a discussion comment as the answer
