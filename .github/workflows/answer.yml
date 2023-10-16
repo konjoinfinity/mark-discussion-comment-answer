@@ -9,11 +9,10 @@ jobs:
     name: validation-checks
     runs-on: ubuntu-latest
     steps:
-      - name: State test
-        run: |
-          cat << OBJECT
-          ${{ toJson(github) }}
-          OBJECT
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
         
       - name: Discussion Validation
         if: ${{ github.event.discussion_comment.state != 'open' }}
