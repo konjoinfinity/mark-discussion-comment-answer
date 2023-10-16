@@ -12,10 +12,12 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
+          DISCUSS: ${{ toJSON(github.event.discussion) }}
+          COMMENTS: ${{ toJSON(github.event.discussion.comments) }}
         run: |
           echo "$GITHUB_CONTEXT"
-          echo "$GITHUB_CONTEXT.event.discussion"
-          echo "$GITHUB_CONTEXT.event.discussion.comments"
+          echo "$DISCUSS"
+          echo "$COMMENTS"
         
       - name: Discussion Validation
         if: ${{ github.event.discussion_comment.state != 'open' }}
