@@ -12,6 +12,8 @@ jobs:
       github.event.discussion_comment.discussion.category.is_answerable == true &&
       github.event.discussion_comment.discussion.answer_chosen_at == null && 
       github.event.discussion_comment.locked == false
+    steps:
+      - run: echo 'Validation Passed!'
   
   mark-comment-answer:
     name: Mark a discussion comment as the answer
