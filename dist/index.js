@@ -45,6 +45,10 @@ function markDiscussionCommentAnswer() {
             (0, core_1.setFailed)("Discussion does not have enough comments for an answer to be chosen.");
             return;
         }
+        if (eventPayload.locked) {
+            (0, core_1.setFailed)("Discussion is locked, answers can no longer be selected.");
+            return;
+        }
         function countPositiveReactions(data) {
             const comments = data.repository.discussions.edges[0].node.comments.edges;
             const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
