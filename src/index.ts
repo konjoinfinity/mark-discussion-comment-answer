@@ -39,6 +39,11 @@ export async function markDiscussionCommentAnswer() {
     return;
   }
 
+  if (eventPayload.locked) {
+    setFailed("Discussion is locked, answers can no longer be selected.");
+    return;
+  }
+
   function countPositiveReactions(data: any) {
     const comments = data.repository.discussions.edges[0].node.comments.edges;
     const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
