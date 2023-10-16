@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: State test
-        run: echo ${{ github.event.discussion_comment }}
+        run: echo ${{ github.event }}
         
       - name: Discussion Validation
         if: ${{ github.event.discussion_comment.state != 'open' }}
