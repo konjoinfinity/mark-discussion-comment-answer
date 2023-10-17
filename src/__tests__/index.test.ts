@@ -103,7 +103,6 @@ test("Not enough comments to mark an answer", async () => {
   );
 });
 
-// Test if the discussion is locked and answers can no longer be selected.
 test("Test if discussion is locked and answers can no longer be selected", async () => {
   process.env.GITHUB_EVENT_PATH = "src/__tests__/locked.json";
   await mockedGetInput.mockReturnValueOnce("{{ github.token }}");

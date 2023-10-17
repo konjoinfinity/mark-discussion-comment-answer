@@ -49,7 +49,7 @@ function countPositiveReactions(data) {
         commentId: commentIdWithMaxReactions,
         commentText: commentWithMaxReactions,
         totalReactions: maxTotalReactions,
-        totalPositiveReactions: positiveReactionsTotal
+        totalPositiveReactions: positiveReactionsTotal,
     };
 }
 exports.countPositiveReactions = countPositiveReactions;

@@ -128,7 +128,7 @@ export async function markDiscussionCommentAnswer() {
       },
     });
     const result = await countPositiveReactions(checkComments);
-    if (result && Number(result.totalReactions) <= Number(reactionThreshold)) {
+    if (result && Number(result.totalPositiveReactions) <= Number(reactionThreshold)) {
       await setFailed("Comment reaction threshold has not been met to be considered an answer.");
       return;
     }
@@ -136,7 +136,7 @@ export async function markDiscussionCommentAnswer() {
     await setOutput("commentText", result.commentText);
     await setOutput("reactionThreshold", reactionThreshold);
     await setOutput("totalReactions", result.totalReactions);
-    console.log(result.totalReactions);
+    await setOutput("totalPositiveReactions", result.totalPositiveReactions);
     await setOutput("commentId", result.commentId);
   } catch (err) {
     console.log(err);
@@ -158,8 +158,8 @@ export async function markDiscussionCommentAnswer() {
         authorization: `token ${token}`,
       },
     });
-    await setOutput("discussionId", response?.markDiscussionCommentAsAnswer?.discussion);
-    await setOutput("clientMutationId", response?.markDiscussionCommentAsAnswer?.clientMutationId);
+    await setOutput("discussionId", response.markDiscussionCommentAsAnswer.discussion);
+    await setOutput("clientMutationId", response.markDiscussionCommentAsAnswer.clientMutationId);
   } catch (error: any) {
     await setFailed(error.message);
   }
