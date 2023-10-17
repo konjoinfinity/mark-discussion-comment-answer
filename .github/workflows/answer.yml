@@ -7,7 +7,7 @@ on:
 jobs:
   mark-comment-answer:
     name: Mark a discussion comment as the answer
-    if: ${{ github.discussion.category.is_answerable == true && github.event.discussion.answer_chosen_at == null }}
+    if: github.discussion.category.is_answerable == true
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub context
