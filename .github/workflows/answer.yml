@@ -19,10 +19,10 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo "$ANSWERABLE"
-          echo $ANSWERABLE == true
+          echo ${{ $ANSWERABLE == true }}
           echo "$COMMENTS"
-          echo $ANSWER == null
-          echo $LOCKED == null
+          echo ${{ ANSWER == null }}
+          echo ${{ $LOCKED == null }}
           echo "$GITHUB_CONTEXT"
   
       - name: Checkout Repo
