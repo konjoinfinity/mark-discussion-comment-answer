@@ -16,68 +16,72 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.markDiscussionCommentAnswer = void 0;
+exports.markDiscussionCommentAnswer = exports.countPositiveReactions = void 0;
 const core_1 = __nccwpck_require__(2186);
 const graphql_1 = __nccwpck_require__(8467);
+function countPositiveReactions(data) {
+    const comments = data.repository.discussions.edges[0].node.comments.edges;
+    const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
+    let maxTotalReactions = 0;
+    let positiveReactionsTotal = 0;
+    let commentWithMaxReactions = "";
+    let commentIdWithMaxReactions = "";
+    for (const comment of comments) {
+        const reactions = comment.node.reactionGroups;
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        let totalPositiveReactions = 0;
+        let totalReactions = 0;
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        for (const reaction of reactions) {
+            totalReactions += reaction.reactors.totalCount;
+            if (positiveReactions.includes(reaction.content)) {
+                totalPositiveReactions += reaction.reactors.totalCount;
+            }
+        }
+        if (totalReactions > maxTotalReactions) {
+            positiveReactionsTotal = totalPositiveReactions;
+            maxTotalReactions = totalReactions;
+            commentWithMaxReactions = comment.node.body;
+            commentIdWithMaxReactions = comment.node.id;
+        }
+    }
+    return {
+        commentId: commentIdWithMaxReactions,
+        commentText: commentWithMaxReactions,
+        totalReactions: maxTotalReactions,
+        totalPositiveReactions: positiveReactionsTotal
+    };
+}
+exports.countPositiveReactions = countPositiveReactions;
 function markDiscussionCommentAnswer() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
-        const token = (0, core_1.getInput)("GH_TOKEN");
-        const reactionThreshold = Number((0, core_1.getInput)("reaction_threshold"));
-        const commentThreshold = (0, core_1.getInput)("comment_threshold");
-        const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
-        const repoName = eventPayload.repository.name;
-        const repoOwner = eventPayload.repository.owner.login;
+        const token = yield (0, core_1.getInput)("GH_TOKEN");
+        const reactionThreshold = yield Number((0, core_1.getInput)("reaction_threshold"));
+        const commentThreshold = yield (0, core_1.getInput)("comment_threshold");
+        const eventPayload = yield require(String(process.env.GITHUB_EVENT_PATH));
+        const repoName = yield eventPayload.repository.name;
+        const repoOwner = yield eventPayload.repository.owner.login;
         let commentNodeId = "";
         if (!eventPayload.discussion.category.is_answerable) {
-            (0, core_1.setFailed)("Discussion category is not answerable.");
+            yield (0, core_1.setFailed)("Discussion category is not answerable.");
             return;
         }
         if (eventPayload.discussion.answer_chosen_at) {
-            (0, core_1.setFailed)("Discussion is already answered.");
+            yield (0, core_1.setFailed)("Discussion is already answered.");
             return;
         }
         if (token === "{{ INVALID_TOKEN }}") {
-            (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+            yield (0, core_1.setFailed)("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
             return;
         }
         if (Number(eventPayload.discussion.comments) <= Number(commentThreshold)) {
-            (0, core_1.setFailed)("Discussion does not have enough comments for an answer to be chosen.");
+            yield (0, core_1.setFailed)("Discussion does not have enough comments for an answer to be chosen.");
             return;
         }
         if (eventPayload.locked) {
-            (0, core_1.setFailed)("Discussion is locked, answers can no longer be selected.");
+            yield (0, core_1.setFailed)("Discussion is locked, answers can no longer be selected.");
             return;
-        }
-        function countPositiveReactions(data) {
-            const comments = data.repository.discussions.edges[0].node.comments.edges;
-            const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
-            let maxTotalReactions = 0;
-            let commentWithMaxReactions = "";
-            let commentIdWithMaxReactions = "";
-            for (const comment of comments) {
-                const reactions = comment.node.reactionGroups;
-                /* eslint-disable @typescript-eslint/no-unused-vars */
-                let totalPositiveReactions = 0;
-                let totalReactions = 0;
-                /* eslint-disable @typescript-eslint/no-unused-vars */
-                for (const reaction of reactions) {
-                    totalReactions += reaction.reactors.totalCount;
-                    if (positiveReactions.includes(reaction.content)) {
-                        totalPositiveReactions += reaction.reactors.totalCount;
-                    }
-                }
-                if (totalReactions > maxTotalReactions) {
-                    maxTotalReactions = totalReactions;
-                    commentWithMaxReactions = comment.node.body;
-                    commentIdWithMaxReactions = comment.node.id;
-                }
-            }
-            return {
-                commentId: commentIdWithMaxReactions,
-                commentText: commentWithMaxReactions,
-                totalReactions: maxTotalReactions,
-            };
         }
         try {
             const checkComments = yield (0, graphql_1.graphql)({
@@ -125,7 +129,7 @@ function markDiscussionCommentAnswer() {
             });
             const result = yield countPositiveReactions(checkComments);
             if (result && Number(result.totalReactions) <= Number(reactionThreshold)) {
-                (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
+                yield (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
                 return;
             }
             commentNodeId = result.commentId;
