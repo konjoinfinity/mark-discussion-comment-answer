@@ -54,7 +54,6 @@ function countPositiveReactions(data) {
 }
 exports.countPositiveReactions = countPositiveReactions;
 function markDiscussionCommentAnswer() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const token = yield (0, core_1.getInput)("GH_TOKEN");
         const reactionThreshold = yield Number((0, core_1.getInput)("reaction_threshold"));
@@ -128,7 +127,7 @@ function markDiscussionCommentAnswer() {
                 },
             });
             const result = yield countPositiveReactions(checkComments);
-            if (result && Number(result.totalReactions) <= Number(reactionThreshold)) {
+            if (result && Number(result.totalPositiveReactions) <= Number(reactionThreshold)) {
                 yield (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
                 return;
             }
@@ -136,7 +135,7 @@ function markDiscussionCommentAnswer() {
             yield (0, core_1.setOutput)("commentText", result.commentText);
             yield (0, core_1.setOutput)("reactionThreshold", reactionThreshold);
             yield (0, core_1.setOutput)("totalReactions", result.totalReactions);
-            console.log(result.totalReactions);
+            yield (0, core_1.setOutput)("totalPositiveReactions", result.totalPositiveReactions);
             yield (0, core_1.setOutput)("commentId", result.commentId);
         }
         catch (err) {
@@ -158,8 +157,8 @@ function markDiscussionCommentAnswer() {
                     authorization: `token ${token}`,
                 },
             });
-            yield (0, core_1.setOutput)("discussionId", (_a = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _a === void 0 ? void 0 : _a.discussion);
-            yield (0, core_1.setOutput)("clientMutationId", (_b = response === null || response === void 0 ? void 0 : response.markDiscussionCommentAsAnswer) === null || _b === void 0 ? void 0 : _b.clientMutationId);
+            yield (0, core_1.setOutput)("discussionId", response.markDiscussionCommentAsAnswer.discussion);
+            yield (0, core_1.setOutput)("clientMutationId", response.markDiscussionCommentAsAnswer.clientMutationId);
         }
         catch (error) {
             yield (0, core_1.setFailed)(error.message);
