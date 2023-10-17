@@ -18,12 +18,11 @@ jobs:
           LOCKED: ${{ toJSON(github.event.locked) }}
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
-          echo "$ANSWERABLE"
-          echo ${{ ANSWERABLE == true }}
-          echo "$COMMENTS"
-          echo ${{ ANSWER == null }}
-          echo ${{ LOCKED == null }}
-          echo "$GITHUB_CONTEXT"
+          echo $ANSWERABLE
+          echo $COMMENTS
+          echo $ANSWER
+          echo $LOCKED
+          echo $GITHUB_CONTEXT
   
       - name: Checkout Repo
         uses: actions/checkout@v3
