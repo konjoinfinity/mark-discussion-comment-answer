@@ -1,20 +1,20 @@
 {
-    "comment": {
-      "node_id": "DC_kwDOKEe7W84AbmPS"
-    },
-    "discussion": {
-      "answer_chosen_at": null,
-      "node_id": "D_kwDOKczwv84AV0aF",
-      "comments": 3,
-      "category": {
-        "is_answerable": false
-      }
-    },
-    "repository": {
-      "name": "mark-discussion-comment-answer",
-      "owner": {
-        "login": "konjoinfinity"
-      }
+  "comment": {
+    "node_id": "DC_kwDOKEe7W84AbmPS"
+  },
+  "discussion": {
+    "answer_chosen_at": null,
+    "node_id": "D_kwDOKczwv84AV0aF",
+    "comments": 3,
+    "category": {
+      "is_answerable": false
     }
-  }
-  
+  },
+  "repository": {
+    "name": "mark-discussion-comment-answer",
+    "owner": {
+      "login": "konjoinfinity"
+    }
+  },
+  "locked": false
+}

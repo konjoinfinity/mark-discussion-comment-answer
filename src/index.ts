@@ -10,74 +10,77 @@ interface Res {
   };
 }
 
+export function countPositiveReactions(data: any) {
+  const comments = data.repository.discussions.edges[0].node.comments.edges;
+  const positiveReactions: string[] = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
+
+  let maxTotalReactions = 0;
+  let positiveReactionsTotal = 0;
+  let commentWithMaxReactions = "";
+  let commentIdWithMaxReactions = "";
+
+  for (const comment of comments) {
+    const reactions = comment.node.reactionGroups;
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    let totalPositiveReactions = 0;
+    let totalReactions = 0;
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+
+    for (const reaction of reactions) {
+      totalReactions += reaction.reactors.totalCount;
+      if (positiveReactions.includes(reaction.content)) {
+        totalPositiveReactions += reaction.reactors.totalCount;
+      }
+    }
+
+    if (totalReactions > maxTotalReactions) {
+      positiveReactionsTotal = totalPositiveReactions;
+      maxTotalReactions = totalReactions;
+      commentWithMaxReactions = comment.node.body;
+      commentIdWithMaxReactions = comment.node.id;
+    }
+  }
+
+  return {
+    commentId: commentIdWithMaxReactions,
+    commentText: commentWithMaxReactions,
+    totalReactions: maxTotalReactions,
+    totalPositiveReactions: positiveReactionsTotal,
+  };
+}
+
 export async function markDiscussionCommentAnswer() {
-  const token = getInput("GH_TOKEN");
-  const reactionThreshold = Number(getInput("reaction_threshold"));
-  const commentThreshold = getInput("comment_threshold");
-  const eventPayload = require(String(process.env.GITHUB_EVENT_PATH));
-  const repoName = eventPayload.repository.name;
-  const repoOwner = eventPayload.repository.owner.login;
+  const token = await getInput("GH_TOKEN");
+  const reactionThreshold = await Number(getInput("reaction_threshold"));
+  const commentThreshold = await getInput("comment_threshold");
+  const eventPayload = await require(String(process.env.GITHUB_EVENT_PATH));
+  const repoName = await eventPayload.repository.name;
+  const repoOwner = await eventPayload.repository.owner.login;
   let commentNodeId = "";
 
   if (!eventPayload.discussion.category.is_answerable) {
-    setFailed("Discussion category is not answerable.");
+    await setFailed("Discussion category is not answerable.");
     return;
   }
 
   if (eventPayload.discussion.answer_chosen_at) {
-    setFailed("Discussion is already answered.");
+    await setFailed("Discussion is already answered.");
     return;
   }
 
   if (token === "{{ INVALID_TOKEN }}") {
-    setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+    await setFailed("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
     return;
   }
 
   if (Number(eventPayload.discussion.comments) <= Number(commentThreshold)) {
-    setFailed("Discussion does not have enough comments for an answer to be chosen.");
+    await setFailed("Discussion does not have enough comments for an answer to be chosen.");
     return;
   }
 
   if (eventPayload.locked) {
-    setFailed("Discussion is locked, answers can no longer be selected.");
+    await setFailed("Discussion is locked, answers can no longer be selected.");
     return;
-  }
-
-  function countPositiveReactions(data: any) {
-    const comments = data.repository.discussions.edges[0].node.comments.edges;
-    const positiveReactions = ["+1", "LAUGH", "HEART", "HOORAY", "ROCKET"];
-
-    let maxTotalReactions = 0;
-    let commentWithMaxReactions = "";
-    let commentIdWithMaxReactions = "";
-
-    for (const comment of comments) {
-      const reactions = comment.node.reactionGroups;
-      /* eslint-disable @typescript-eslint/no-unused-vars */
-      let totalPositiveReactions = 0;
-      let totalReactions = 0;
-      /* eslint-disable @typescript-eslint/no-unused-vars */
-
-      for (const reaction of reactions) {
-        totalReactions += reaction.reactors.totalCount;
-        if (positiveReactions.includes(reaction.content)) {
-          totalPositiveReactions += reaction.reactors.totalCount;
-        }
-      }
-
-      if (totalReactions > maxTotalReactions) {
-        maxTotalReactions = totalReactions;
-        commentWithMaxReactions = comment.node.body;
-        commentIdWithMaxReactions = comment.node.id;
-      }
-    }
-
-    return {
-      commentId: commentIdWithMaxReactions,
-      commentText: commentWithMaxReactions,
-      totalReactions: maxTotalReactions,
-    };
   }
 
   try {
@@ -126,7 +129,7 @@ export async function markDiscussionCommentAnswer() {
     });
     const result = await countPositiveReactions(checkComments);
     if (result && Number(result.totalReactions) <= Number(reactionThreshold)) {
-      setFailed("Comment reaction threshold has not been met to be considered an answer.");
+      await setFailed("Comment reaction threshold has not been met to be considered an answer.");
       return;
     }
     commentNodeId = result.commentId;

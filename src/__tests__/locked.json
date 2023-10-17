@@ -3,9 +3,9 @@
       "node_id": "DC_kwDOKEe7W84AbmPS"
     },
     "discussion": {
-      "answer_chosen_at": "2023-10-10T00:22:45.000-04:00",
+      "answer_chosen_at": null,
       "node_id": "D_kwDOKczwv84AV0aF",
-      "comments": 3,
+      "comments": 5,
       "category": {
         "is_answerable": true
       }
@@ -16,6 +16,5 @@
         "login": "konjoinfinity"
       }
     },
-    "locked": false
+    "locked": true
   }
-  
