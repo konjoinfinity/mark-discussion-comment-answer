@@ -56,7 +56,7 @@ exports.countPositiveReactions = countPositiveReactions;
 function markDiscussionCommentAnswer() {
     return __awaiter(this, void 0, void 0, function* () {
         const token = yield (0, core_1.getInput)("GH_TOKEN");
-        const reactionThreshold = yield Number((0, core_1.getInput)("reaction_threshold"));
+        const reactionThreshold = yield (0, core_1.getInput)("reaction_threshold");
         const commentThreshold = yield (0, core_1.getInput)("comment_threshold");
         const eventPayload = yield require(String(process.env.GITHUB_EVENT_PATH));
         const repoName = yield eventPayload.repository.name;
@@ -126,14 +126,16 @@ function markDiscussionCommentAnswer() {
                     authorization: `token ${token}`,
                 },
             });
+            console.log(reactionThreshold);
             const result = yield countPositiveReactions(checkComments);
             if (result && Number(result.totalPositiveReactions) <= Number(reactionThreshold)) {
                 yield (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
                 return;
             }
+            console.log(result);
             commentNodeId = result.commentId;
             yield (0, core_1.setOutput)("commentText", result.commentText);
-            yield (0, core_1.setOutput)("reactionThreshold", reactionThreshold);
+            yield (0, core_1.setOutput)("reactionThreshold", Number(reactionThreshold));
             yield (0, core_1.setOutput)("totalReactions", result.totalReactions);
             yield (0, core_1.setOutput)("totalPositiveReactions", result.totalPositiveReactions);
             yield (0, core_1.setOutput)("commentId", result.commentId);

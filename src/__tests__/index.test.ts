@@ -180,7 +180,7 @@ test("testing outputs", async () => {
   await expect(mockedSetOutput).toHaveBeenCalledWith("totalPositiveReactions", 4);
 });
 
-test("testing outputs failure", async () => {
+test("testing outputs failure - not enough reactions", async () => {
   await mockedGetInput.mockReturnValueOnce("8");
   await mockedGetInput.mockReturnValueOnce("4");
 
