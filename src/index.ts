@@ -51,7 +51,7 @@ export function countPositiveReactions(data: any) {
 
 export async function markDiscussionCommentAnswer() {
   const token = await getInput("GH_TOKEN");
-  const reactionThreshold = await Number(getInput("reaction_threshold"));
+  const reactionThreshold = await getInput("reaction_threshold");
   const commentThreshold = await getInput("comment_threshold");
   const eventPayload = await require(String(process.env.GITHUB_EVENT_PATH));
   const repoName = await eventPayload.repository.name;
@@ -127,14 +127,16 @@ export async function markDiscussionCommentAnswer() {
         authorization: `token ${token}`,
       },
     });
+    console.log(reactionThreshold);
     const result = await countPositiveReactions(checkComments);
     if (result && Number(result.totalPositiveReactions) <= Number(reactionThreshold)) {
       await setFailed("Comment reaction threshold has not been met to be considered an answer.");
       return;
     }
+    console.log(result);
     commentNodeId = result.commentId;
     await setOutput("commentText", result.commentText);
-    await setOutput("reactionThreshold", reactionThreshold);
+    await setOutput("reactionThreshold", Number(reactionThreshold));
     await setOutput("totalReactions", result.totalReactions);
     await setOutput("totalPositiveReactions", result.totalPositiveReactions);
     await setOutput("commentId", result.commentId);

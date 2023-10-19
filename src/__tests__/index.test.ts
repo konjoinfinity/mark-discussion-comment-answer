@@ -3,6 +3,7 @@ import { graphql } from "@octokit/graphql";
 import * as core from "@actions/core";
 import { mocked } from "jest-mock";
 import commentsReactions from "./commentsReactions.json";
+import notEnoughReactions from "./notEnoughReactions.json";
 
 jest.mock("@octokit/graphql");
 jest.mock("@actions/core");
@@ -63,10 +64,10 @@ test("run function successfully runs", async () => {
   await markDiscussionCommentAnswer();
 
   await expect(mockedGetInput).toHaveBeenCalledTimes(3);
+  await expect(mockedGraphQL).toHaveBeenCalledTimes(2);
 });
 
 test("Test if discussion is already answered", async () => {
-  await mockedGetInput.mockReturnValueOnce("{{ github.token }}");
   await mockedGetInput.mockReturnValueOnce("3");
   await mockedGetInput.mockReturnValueOnce("3");
   process.env.GITHUB_EVENT_PATH = "src/__tests__/alreadyAnswered.json";
@@ -78,7 +79,6 @@ test("Test if discussion is already answered", async () => {
 });
 
 test("Test if discussion is unanswerable", async () => {
-  await mockedGetInput.mockReturnValueOnce("{{ github.token }}");
   await mockedGetInput.mockReturnValueOnce("3");
   await mockedGetInput.mockReturnValueOnce("3");
   process.env.GITHUB_EVENT_PATH = "src/__tests__/unanswerable.json";
@@ -105,12 +105,8 @@ test("Not enough comments to mark an answer", async () => {
 
 test("Test if discussion is locked and answers can no longer be selected", async () => {
   process.env.GITHUB_EVENT_PATH = "src/__tests__/locked.json";
-  await mockedGetInput.mockReturnValueOnce("{{ github.token }}");
   await mockedGetInput.mockReturnValueOnce("3");
   await mockedGetInput.mockReturnValueOnce("3");
-
-  mockedGetInput.mockReturnValueOnce("DC_kwDOKEe7W84AbmPS");
-  mockedGetInput.mockReturnValueOnce(String(true));
 
   await markDiscussionCommentAnswer();
 
@@ -165,4 +161,35 @@ test("countPositiveReactions() returns 0 positive reactions for a given comment"
   await expect(result.commentText).toBe("test comment");
   await expect(result.totalReactions).toBe(5);
   await expect(result.totalPositiveReactions).toBe(0);
+});
+
+test("testing outputs", async () => {
+  await mockedGetInput.mockReturnValueOnce("3");
+  await mockedGetInput.mockReturnValueOnce("3");
+
+  await mockedGraphQL.mockResolvedValueOnce(commentsReactions);
+
+  await markDiscussionCommentAnswer();
+
+  await expect(mockedGetInput).toHaveBeenCalledTimes(3);
+  await expect(mockedSetOutput).toHaveBeenCalledTimes(5);
+  await expect(mockedSetOutput).toHaveBeenCalledWith("commentText", "hello");
+  await expect(mockedSetOutput).toHaveBeenCalledWith("reactionThreshold", 3);
+  await expect(mockedSetOutput).toHaveBeenCalledWith("totalReactions", 6);
+  await expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "DC_kwDOKczwv84Abmrk");
+  await expect(mockedSetOutput).toHaveBeenCalledWith("totalPositiveReactions", 4);
+});
+
+test("testing outputs failure", async () => {
+  await mockedGetInput.mockReturnValueOnce("8");
+  await mockedGetInput.mockReturnValueOnce("4");
+
+  await mockedGraphQL.mockResolvedValueOnce(notEnoughReactions);
+
+  await markDiscussionCommentAnswer();
+
+  await expect(mockedSetFailed).toHaveBeenCalledWith(
+    "Comment reaction threshold has not been met to be considered an answer."
+  );
+  await expect(mockedGetInput).toHaveBeenCalledTimes(3);
 });
