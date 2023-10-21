@@ -21,10 +21,8 @@ export function countPositiveReactions(data: any) {
 
   for (const comment of comments) {
     const reactions = comment.node.reactionGroups;
-    /* eslint-disable @typescript-eslint/no-unused-vars */
     let totalPositiveReactions = 0;
     let totalReactions = 0;
-    /* eslint-disable @typescript-eslint/no-unused-vars */
 
     for (const reaction of reactions) {
       totalReactions += reaction.reactors.totalCount;
@@ -47,6 +45,53 @@ export function countPositiveReactions(data: any) {
     totalReactions: maxTotalReactions,
     totalPositiveReactions: positiveReactionsTotal,
   };
+}
+
+export async function checkCommentsCall(repoOwner: string, repoName: string, token: string) {
+  const checkCommentsRes: any = await graphql({
+    query: `query {
+  repository(owner: "${repoOwner}", name: "${repoName}" ) {
+    discussions(first: 1, answered: false) {
+      edges {
+        node {
+          isAnswered
+          id
+          title
+          body
+          locked
+          number
+          publishedAt
+          repository {
+            name
+          }
+          comments(first: 10) {
+            edges {
+              node {
+                id
+                upvoteCount
+                body
+                createdAt
+                reactionGroups {
+                  reactors {
+                    totalCount
+                  }
+                  content
+                  createdAt
+                  viewerHasReacted
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`,
+    headers: {
+      authorization: `token ${token}`,
+    },
+  });
+  return checkCommentsRes;
 }
 
 export async function markDiscussionCommentAnswer() {
@@ -84,49 +129,7 @@ export async function markDiscussionCommentAnswer() {
   }
 
   try {
-    const checkComments: any = await graphql({
-      query: `query {
-      repository(owner: "${repoOwner}", name: "${repoName}" ) {
-        discussions(first: 1, answered: false) {
-          edges {
-            node {
-              isAnswered
-              id
-              title
-              body
-              locked
-              number
-              publishedAt
-              repository {
-                name
-              }
-              comments(first: 10) {
-                edges {
-                  node {
-                    id
-                    upvoteCount
-                    body
-                    createdAt
-                    reactionGroups {
-                      reactors {
-                        totalCount
-                      }
-                      content
-                      createdAt
-                      viewerHasReacted
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }`,
-      headers: {
-        authorization: `token ${token}`,
-      },
-    });
+    const checkComments = await checkCommentsCall(repoOwner, repoName, token);
     console.log(reactionThreshold);
     const result = await countPositiveReactions(checkComments);
     if (result && Number(result.totalPositiveReactions) <= Number(reactionThreshold)) {
@@ -145,6 +148,7 @@ export async function markDiscussionCommentAnswer() {
   }
 
   try {
+    console.log("last GQL");
     const response: Res = await graphql({
       query: `mutation {
       markDiscussionCommentAsAnswer(
@@ -160,6 +164,7 @@ export async function markDiscussionCommentAnswer() {
         authorization: `token ${token}`,
       },
     });
+    console.log(response);
     await setOutput("discussionId", response.markDiscussionCommentAsAnswer.discussion);
     await setOutput("clientMutationId", response.markDiscussionCommentAsAnswer.clientMutationId);
   } catch (error: any) {
