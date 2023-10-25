@@ -16,7 +16,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.markDiscussionCommentAnswer = exports.checkCommentsCall = exports.countPositiveReactions = void 0;
+exports.markDiscussionCommentAnswer = exports.markDiscussionAnswerCall = exports.checkCommentsCall = exports.countPositiveReactions = void 0;
 const core_1 = __nccwpck_require__(2186);
 const graphql_1 = __nccwpck_require__(8467);
 function countPositiveReactions(data) {
@@ -100,6 +100,27 @@ function checkCommentsCall(repoOwner, repoName, token) {
     });
 }
 exports.checkCommentsCall = checkCommentsCall;
+function markDiscussionAnswerCall(commentNodeId, token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield (0, graphql_1.graphql)({
+            query: `mutation {
+  markDiscussionCommentAsAnswer(
+    input: { id: "${commentNodeId}", clientMutationId: "1234" }
+  ) {
+    clientMutationId
+    discussion {
+      id
+    }
+  }
+}`,
+            headers: {
+                authorization: `token ${token}`,
+            },
+        });
+        return response;
+    });
+}
+exports.markDiscussionAnswerCall = markDiscussionAnswerCall;
 function markDiscussionCommentAnswer() {
     return __awaiter(this, void 0, void 0, function* () {
         const token = yield (0, core_1.getInput)("GH_TOKEN");
@@ -131,13 +152,11 @@ function markDiscussionCommentAnswer() {
         }
         try {
             const checkComments = yield checkCommentsCall(repoOwner, repoName, token);
-            console.log(reactionThreshold);
             const result = yield countPositiveReactions(checkComments);
             if (result && Number(result.totalPositiveReactions) <= Number(reactionThreshold)) {
                 yield (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
                 return;
             }
-            console.log(result);
             commentNodeId = result.commentId;
             yield (0, core_1.setOutput)("commentText", result.commentText);
             yield (0, core_1.setOutput)("reactionThreshold", Number(reactionThreshold));
@@ -146,27 +165,11 @@ function markDiscussionCommentAnswer() {
             yield (0, core_1.setOutput)("commentId", result.commentId);
         }
         catch (err) {
-            console.log(err);
+            yield (0, core_1.setFailed)(String(err));
         }
         try {
-            console.log("last GQL");
-            const response = yield (0, graphql_1.graphql)({
-                query: `mutation {
-      markDiscussionCommentAsAnswer(
-        input: { id: "${commentNodeId}", clientMutationId: "1234" }
-      ) {
-        clientMutationId
-        discussion {
-          id
-        }
-      }
-    }`,
-                headers: {
-                    authorization: `token ${token}`,
-                },
-            });
-            console.log(response);
-            yield (0, core_1.setOutput)("discussionId", response.markDiscussionCommentAsAnswer.discussion);
+            const response = yield markDiscussionAnswerCall(commentNodeId, token);
+            yield (0, core_1.setOutput)("discussionId", response.markDiscussionCommentAsAnswer.discussion.node_id);
             yield (0, core_1.setOutput)("clientMutationId", response.markDiscussionCommentAsAnswer.clientMutationId);
         }
         catch (error) {
