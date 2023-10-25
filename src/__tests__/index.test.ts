@@ -1,9 +1,10 @@
-import { countPositiveReactions, markDiscussionCommentAnswer } from "../index";
+import { countPositiveReactions, markDiscussionCommentAnswer, markDiscussionAnswerCall } from "../index";
 import { graphql } from "@octokit/graphql";
 import * as core from "@actions/core";
 import { mocked } from "jest-mock";
 import commentsReactions from "./commentsReactions.json";
 import notEnoughReactions from "./notEnoughReactions.json";
+import baseCall from "./event.json";
 
 jest.mock("@octokit/graphql");
 jest.mock("@actions/core");
@@ -26,45 +27,37 @@ beforeEach(async () => {
 
 afterAll(async () => {
   process.env.GITHUB_EVENT_PATH = "src/__tests__/event.json";
-});
-
-test("Test if github token is invalid", async () => {
-  await mockedGetInput.mockReturnValueOnce("{{ INVALID_TOKEN }}");
-  await mockedGetInput.mockReturnValueOnce("3");
-  await mockedGetInput.mockReturnValueOnce("3");
-
-  const mockedResponse = {
-    clientMutationId: "1234",
-    discussion: {
-      id: "discussionId",
-    },
-  };
-  await mockedGraphQL.mockResolvedValueOnce(mockedResponse);
-
-  await markDiscussionCommentAnswer();
-
-  await expect(mockedGetInput).toHaveBeenCalledTimes(3);
-  await expect(mockedSetFailed).toHaveBeenCalledWith("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
+  await jest.clearAllMocks();
 });
 
 test("run function successfully runs", async () => {
   await mockedGetInput.mockReturnValueOnce("{{ secrets.GITHUB_TOKEN }}");
   await mockedGetInput.mockReturnValueOnce("3");
   await mockedGetInput.mockReturnValueOnce("3");
-  await mockedGetInput.mockReturnValueOnce("DC_kwDOKEe7W84AbmPS");
 
   const mockedResponse = {
     clientMutationId: "1234",
     discussion: {
-      id: "discussionId",
+      node_id: "DC_kwDOKczwv84Abmrk",
     },
   };
-  await mockedGraphQL.mockResolvedValueOnce(mockedResponse);
+  const mockedResult = {
+    commentId: "DC_kwDOKczwv84Abmrk",
+    commentText: "hello",
+    reactionThreshold: 3,
+    totalReactions: 10,
+    totalPositiveReactions: 5,
+  };
 
+  await mockedGraphQL.mockResolvedValueOnce(commentsReactions);
   await markDiscussionCommentAnswer();
 
   await expect(mockedGetInput).toHaveBeenCalledTimes(3);
   await expect(mockedGraphQL).toHaveBeenCalledTimes(2);
+  await expect(mockedSetOutput).toHaveBeenCalledWith("commentText", "hello");
+  await expect(mockedSetOutput).toHaveBeenCalledWith("reactionThreshold", 3);
+  await expect(mockedSetOutput).toHaveBeenCalledWith("totalReactions", 6);
+  await expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "DC_kwDOKczwv84Abmrk");
 });
 
 test("Test if discussion is already answered", async () => {
@@ -192,4 +185,23 @@ test("testing outputs failure - not enough reactions", async () => {
     "Comment reaction threshold has not been met to be considered an answer."
   );
   await expect(mockedGetInput).toHaveBeenCalledTimes(3);
+});
+
+test("Test if github token is invalid", async () => {
+  await mockedGetInput.mockReturnValueOnce("{{ INVALID_TOKEN }}");
+  await mockedGetInput.mockReturnValueOnce("3");
+  await mockedGetInput.mockReturnValueOnce("3");
+
+  const mockedResponse = {
+    clientMutationId: "1234",
+    discussion: {
+      id: "discussionId",
+    },
+  };
+  await mockedGraphQL.mockResolvedValueOnce(mockedResponse);
+
+  await markDiscussionCommentAnswer();
+
+  await expect(mockedGetInput).toHaveBeenCalledTimes(3);
+  await expect(mockedSetFailed).toHaveBeenCalledWith("GitHub token missing or invalid, please enter a GITHUB_TOKEN");
 });

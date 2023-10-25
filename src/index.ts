@@ -5,7 +5,7 @@ interface Res {
   markDiscussionCommentAsAnswer: {
     clientMutationId: string;
     discussion: {
-      id: string;
+      node_id: string;
     };
   };
 }
@@ -94,6 +94,25 @@ export async function checkCommentsCall(repoOwner: string, repoName: string, tok
   return checkCommentsRes;
 }
 
+export async function markDiscussionAnswerCall(commentNodeId: string, token: string) {
+  const response: Res = await graphql({
+    query: `mutation {
+  markDiscussionCommentAsAnswer(
+    input: { id: "${commentNodeId}", clientMutationId: "1234" }
+  ) {
+    clientMutationId
+    discussion {
+      id
+    }
+  }
+}`,
+    headers: {
+      authorization: `token ${token}`,
+    },
+  });
+  return response;
+}
+
 export async function markDiscussionCommentAnswer() {
   const token = await getInput("GH_TOKEN");
   const reactionThreshold = await getInput("reaction_threshold");
@@ -130,13 +149,11 @@ export async function markDiscussionCommentAnswer() {
 
   try {
     const checkComments = await checkCommentsCall(repoOwner, repoName, token);
-    console.log(reactionThreshold);
     const result = await countPositiveReactions(checkComments);
     if (result && Number(result.totalPositiveReactions) <= Number(reactionThreshold)) {
       await setFailed("Comment reaction threshold has not been met to be considered an answer.");
       return;
     }
-    console.log(result);
     commentNodeId = result.commentId;
     await setOutput("commentText", result.commentText);
     await setOutput("reactionThreshold", Number(reactionThreshold));
@@ -144,28 +161,12 @@ export async function markDiscussionCommentAnswer() {
     await setOutput("totalPositiveReactions", result.totalPositiveReactions);
     await setOutput("commentId", result.commentId);
   } catch (err) {
-    console.log(err);
+    await setFailed(String(err));
   }
 
   try {
-    console.log("last GQL");
-    const response: Res = await graphql({
-      query: `mutation {
-      markDiscussionCommentAsAnswer(
-        input: { id: "${commentNodeId}", clientMutationId: "1234" }
-      ) {
-        clientMutationId
-        discussion {
-          id
-        }
-      }
-    }`,
-      headers: {
-        authorization: `token ${token}`,
-      },
-    });
-    console.log(response);
-    await setOutput("discussionId", response.markDiscussionCommentAsAnswer.discussion);
+    const response = await markDiscussionAnswerCall(commentNodeId, token);
+    await setOutput("discussionId", response.markDiscussionCommentAsAnswer.discussion.node_id);
     await setOutput("clientMutationId", response.markDiscussionCommentAsAnswer.clientMutationId);
   } catch (error: any) {
     await setFailed(error.message);
