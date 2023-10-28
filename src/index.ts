@@ -2,11 +2,9 @@ import { getInput, setFailed, setOutput } from "@actions/core";
 import { graphql } from "@octokit/graphql";
 
 interface Res {
-  markDiscussionCommentAsAnswer: {
-    clientMutationId: string;
-    discussion: {
-      node_id: string;
-    };
+  clientMutationId: string;
+  discussion: {
+    node_id: string;
   };
 }
 
@@ -154,22 +152,17 @@ export async function markDiscussionCommentAnswer() {
       await setFailed("Comment reaction threshold has not been met to be considered an answer.");
       return;
     }
+    const response = await markDiscussionAnswerCall(commentNodeId, token);
     commentNodeId = result.commentId;
     await setOutput("commentText", result.commentText);
     await setOutput("reactionThreshold", Number(reactionThreshold));
     await setOutput("totalReactions", result.totalReactions);
     await setOutput("totalPositiveReactions", result.totalPositiveReactions);
     await setOutput("commentId", result.commentId);
+    await setOutput("discussionId", response.discussion.node_id);
+    await setOutput("clientMutationId", response.clientMutationId);
   } catch (err) {
     await setFailed(String(err));
-  }
-
-  try {
-    const response = await markDiscussionAnswerCall(commentNodeId, token);
-    await setOutput("discussionId", response.markDiscussionCommentAsAnswer.discussion.node_id);
-    await setOutput("clientMutationId", response.markDiscussionCommentAsAnswer.clientMutationId);
-  } catch (error: any) {
-    await setFailed(error.message);
   }
 }
 

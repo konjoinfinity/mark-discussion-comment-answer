@@ -13,6 +13,7 @@ const mockedGetInput = mocked(core.getInput);
 const mockedSetFailed = mocked(core.setFailed);
 const mockedSetOutput = mocked(core.setOutput);
 const mockedGraphQL = mocked(graphql);
+3;
 
 beforeEach(async () => {
   await jest.clearAllMocks();
@@ -30,34 +31,72 @@ afterAll(async () => {
   await jest.clearAllMocks();
 });
 
-test("run function successfully runs", async () => {
-  await mockedGetInput.mockReturnValueOnce("{{ secrets.GITHUB_TOKEN }}");
+// test("run function successfully runs", async () => {
+//   await mockedGetInput.mockReturnValueOnce("{{ secrets.GITHUB_TOKEN }}");
+//   await mockedGetInput.mockReturnValueOnce("3");
+//   await mockedGetInput.mockReturnValueOnce("3");
+
+//   const mockedResponse = {
+//     clientMutationId: "1234",
+//     discussion: {
+//       node_id: "DC_kwDOKczwv84Abmrk",
+//     },
+//   };
+//   const mockedResult = {
+//     commentId: "DC_kwDOKczwv84Abmrk",
+//     commentText: "hello",
+//     reactionThreshold: 3,
+//     totalReactions: 10,
+//     totalPositiveReactions: 5,
+//   };
+
+//   await mockedGraphQL.mockResolvedValueOnce(commentsReactions);
+//   await markDiscussionCommentAnswer();
+
+//   await expect(mockedGetInput).toHaveBeenCalledTimes(3);
+//   await expect(mockedGraphQL).toHaveBeenCalledTimes(2);
+//   await expect(mockedSetOutput).toHaveBeenCalledWith("commentText", "hello");
+//   await expect(mockedSetOutput).toHaveBeenCalledWith("reactionThreshold", 3);
+//   await expect(mockedSetOutput).toHaveBeenCalledWith("totalReactions", 6);
+//   await expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "DC_kwDOKczwv84Abmrk");
+// });
+
+test("Run function successfully with mocked GraphQL responses", async () => {
   await mockedGetInput.mockReturnValueOnce("3");
   await mockedGetInput.mockReturnValueOnce("3");
 
-  const mockedResponse = {
-    clientMutationId: "1234",
-    discussion: {
-      node_id: "DC_kwDOKczwv84Abmrk",
-    },
-  };
-  const mockedResult = {
+  await mockedGraphQL.mockResolvedValueOnce(commentsReactions);
+
+  // Mock GraphQL response for checkComments
+  const mockedCheckCommentsResponse = {
     commentId: "DC_kwDOKczwv84Abmrk",
     commentText: "hello",
-    reactionThreshold: 3,
     totalReactions: 10,
     totalPositiveReactions: 5,
   };
 
-  await mockedGraphQL.mockResolvedValueOnce(commentsReactions);
+  // Mock GraphQL response for markDiscussionCommentAsAnswer
+  const mockedMarkDiscussionResponse = {
+    clientMutationId: "1234",
+    discussion: {
+      node_id: "D_kwDOKczwv84AV0aF",
+    },
+  };
+  await mockedGraphQL.mockResolvedValueOnce(mockedMarkDiscussionResponse);
+
   await markDiscussionCommentAnswer();
 
   await expect(mockedGetInput).toHaveBeenCalledTimes(3);
   await expect(mockedGraphQL).toHaveBeenCalledTimes(2);
+  await expect(mockedSetOutput).toHaveBeenCalledTimes(7);
+
+  // Add assertions for the final output (Res) based on your specific data
   await expect(mockedSetOutput).toHaveBeenCalledWith("commentText", "hello");
   await expect(mockedSetOutput).toHaveBeenCalledWith("reactionThreshold", 3);
   await expect(mockedSetOutput).toHaveBeenCalledWith("totalReactions", 6);
   await expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "DC_kwDOKczwv84Abmrk");
+  await expect(mockedSetOutput).toHaveBeenCalledWith("discussionId", "D_kwDOKczwv84AV0aF");
+  await expect(mockedSetOutput).toHaveBeenCalledWith("clientMutationId", "1234");
 });
 
 test("Test if discussion is already answered", async () => {
