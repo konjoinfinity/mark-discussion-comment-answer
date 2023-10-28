@@ -31,36 +31,6 @@ afterAll(async () => {
   await jest.clearAllMocks();
 });
 
-// test("run function successfully runs", async () => {
-//   await mockedGetInput.mockReturnValueOnce("{{ secrets.GITHUB_TOKEN }}");
-//   await mockedGetInput.mockReturnValueOnce("3");
-//   await mockedGetInput.mockReturnValueOnce("3");
-
-//   const mockedResponse = {
-//     clientMutationId: "1234",
-//     discussion: {
-//       node_id: "DC_kwDOKczwv84Abmrk",
-//     },
-//   };
-//   const mockedResult = {
-//     commentId: "DC_kwDOKczwv84Abmrk",
-//     commentText: "hello",
-//     reactionThreshold: 3,
-//     totalReactions: 10,
-//     totalPositiveReactions: 5,
-//   };
-
-//   await mockedGraphQL.mockResolvedValueOnce(commentsReactions);
-//   await markDiscussionCommentAnswer();
-
-//   await expect(mockedGetInput).toHaveBeenCalledTimes(3);
-//   await expect(mockedGraphQL).toHaveBeenCalledTimes(2);
-//   await expect(mockedSetOutput).toHaveBeenCalledWith("commentText", "hello");
-//   await expect(mockedSetOutput).toHaveBeenCalledWith("reactionThreshold", 3);
-//   await expect(mockedSetOutput).toHaveBeenCalledWith("totalReactions", 6);
-//   await expect(mockedSetOutput).toHaveBeenCalledWith("commentId", "DC_kwDOKczwv84Abmrk");
-// });
-
 test("Run function successfully with mocked GraphQL responses", async () => {
   await mockedGetInput.mockReturnValueOnce("3");
   await mockedGetInput.mockReturnValueOnce("3");

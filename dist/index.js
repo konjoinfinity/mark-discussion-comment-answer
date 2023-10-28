@@ -157,23 +157,18 @@ function markDiscussionCommentAnswer() {
                 yield (0, core_1.setFailed)("Comment reaction threshold has not been met to be considered an answer.");
                 return;
             }
+            const response = yield markDiscussionAnswerCall(commentNodeId, token);
             commentNodeId = result.commentId;
             yield (0, core_1.setOutput)("commentText", result.commentText);
             yield (0, core_1.setOutput)("reactionThreshold", Number(reactionThreshold));
             yield (0, core_1.setOutput)("totalReactions", result.totalReactions);
             yield (0, core_1.setOutput)("totalPositiveReactions", result.totalPositiveReactions);
             yield (0, core_1.setOutput)("commentId", result.commentId);
+            yield (0, core_1.setOutput)("discussionId", response.discussion.node_id);
+            yield (0, core_1.setOutput)("clientMutationId", response.clientMutationId);
         }
         catch (err) {
             yield (0, core_1.setFailed)(String(err));
-        }
-        try {
-            const response = yield markDiscussionAnswerCall(commentNodeId, token);
-            yield (0, core_1.setOutput)("discussionId", response.markDiscussionCommentAsAnswer.discussion.node_id);
-            yield (0, core_1.setOutput)("clientMutationId", response.markDiscussionCommentAsAnswer.clientMutationId);
-        }
-        catch (error) {
-            yield (0, core_1.setFailed)(error.message);
         }
     });
 }
